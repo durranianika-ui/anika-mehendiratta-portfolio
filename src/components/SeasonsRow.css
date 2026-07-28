@@ -1,0 +1,65 @@
+.srow { margin-block: clamp(2rem, 5vw, 3.5rem); }
+.srow__label {
+  display: flex; align-items: center;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  color: var(--text-hi);
+  margin-bottom: 1.1rem;
+}
+.srow__viewport { position: relative; }
+.srow__track {
+  display: flex;
+  gap: clamp(0.6rem, 1.2vw, 1rem);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 var(--gutter) clamp(1.5rem, 4vw, 2.5rem);
+  scrollbar-width: none;
+}
+.srow__track::-webkit-scrollbar { display: none; }
+
+.scard {
+  flex: 0 0 auto;
+  width: clamp(280px, 36vw, 440px);
+  scroll-snap-align: start;
+}
+.scard__link { display: block; }
+.scard__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.45s var(--ease-cinema);
+}
+.scard__media .smartimg :where(img) { filter: brightness(0.55) saturate(1.05); transition: transform var(--dur-slow) var(--ease-cinema), filter var(--dur-mid); }
+.scard__season {
+  position: absolute; top: 0.8rem; left: 0.9rem;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--text-hi);
+  padding: 0.25em 0.7em; border-radius: 100px;
+  background: rgba(0,0,0,0.5); border: 1px solid var(--glass-line);
+  backdrop-filter: blur(6px);
+}
+.scard__grad { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.9), transparent 60%); }
+.scard__body { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.2rem 1.2rem 1.1rem; }
+.scard__body h3 { font-size: var(--step-1); }
+.scard__org { color: var(--text-lo); font-size: var(--step--1); margin-top: 0.2rem; }
+.scard__logline { color: var(--text-mid); font-size: var(--step--1); margin-top: 0.5rem; opacity: 0; max-height: 0; transition: opacity var(--dur-fast), max-height var(--dur-fast); }
+
+@media (hover: hover) {
+  .scard__link:hover .scard__media { transform: scale(1.03); }
+  .scard__link:hover .scard__media .smartimg :where(img) { transform: scale(1.06); filter: brightness(0.7); }
+  .scard__link:hover .scard__logline { opacity: 1; max-height: 4em; }
+}
+@media (hover: none) { .scard__logline { opacity: 1; max-height: 4em; } }
+
+.srow__arrow {
+  position: absolute; top: 0; bottom: clamp(1.5rem, 4vw, 2.5rem);
+  width: clamp(2rem, 4vw, 3.5rem); z-index: 6; font-size: 2rem; color: var(--text-hi);
+  background: linear-gradient(90deg, rgba(7,7,9,0.9), transparent); opacity: 0;
+  transition: opacity var(--dur-fast);
+}
+.srow__arrow--right { right: 0; background: linear-gradient(270deg, rgba(7,7,9,0.9), transparent); }
+.srow__viewport:hover .srow__arrow { opacity: 1; }
+@media (hover: none) { .srow__arrow { display: none; } }

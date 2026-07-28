@@ -1,0 +1,205 @@
+.home__rows {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-6rem, -8vw, -3rem);
+  padding-top: 1rem;
+}
+
+/* --- Top career wins (Top 10 treatment) --- */
+.topwins { margin-block: clamp(3rem, 8vw, 5rem); }
+.topwins__label {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  font-weight: 700;
+  color: var(--text-hi);
+  margin-bottom: 1.6rem;
+}
+.topwins__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+.win {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.4rem 1.5rem 1.4rem 0.5rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(150deg, var(--bg-2), var(--bg-1));
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: transform var(--dur-fast) var(--ease-cinema), border-color var(--dur-fast);
+}
+.win:hover { transform: translateY(-5px); border-color: var(--line-strong); }
+.win__rank {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(4rem, 9vw, 6.5rem);
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.16);
+  flex: 0 0 auto;
+  width: 1.1ch;
+  text-align: center;
+}
+.win__body { min-width: 0; }
+.win__stat {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--step-2);
+  color: var(--accent-soft);
+  line-height: 1;
+}
+.win__headline { font-size: var(--step-0); margin-top: 0.3rem; color: var(--text-hi); }
+.win__detail { font-size: var(--step--1); color: var(--text-lo); margin-top: 0.35rem; line-height: 1.4; }
+
+/* --- Certifications --- */
+.certs { margin-block: clamp(3rem, 8vw, 5rem); }
+.certs__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+.cert {
+  padding: 1.4rem 1.4rem 1.5rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  transition: border-color var(--dur-fast), transform var(--dur-fast) var(--ease-cinema);
+}
+.cert:hover { transform: translateY(-4px); border-color: var(--line-strong); }
+.cert--progress { border-color: rgba(229, 9, 20, 0.4); background: linear-gradient(150deg, rgba(229,9,20,0.08), var(--glass)); }
+.cert__provider { font-size: var(--step-1); color: var(--text-hi); margin-bottom: 0.9rem; }
+.cert__items { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.cert__items li {
+  font-size: 0.72rem;
+  color: var(--text-mid);
+  padding: 0.28em 0.7em;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+}
+
+/* --- Trusted with (counters) --- */
+.trusted { margin-block: clamp(3rem, 8vw, 5rem); }
+.trusted__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  border-block: 1px solid var(--line);
+  padding-block: clamp(1.6rem, 4vw, 2.6rem);
+}
+.trusted__item { text-align: left; }
+.trusted__v { display: block; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.8rem, 1.2rem + 2vw, 2.8rem); color: var(--text-hi); line-height: 1; }
+.trusted__item:nth-child(odd) .trusted__v { color: var(--accent-soft); }
+.trusted__l { color: var(--text-lo); font-size: var(--step--1); }
+
+/* --- What I bring (outcome cards) --- */
+.brings { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.1rem; }
+.bring {
+  position: relative; overflow: hidden;
+  padding: 1.8rem 1.7rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(162deg, var(--bg-2), var(--bg-1));
+  border: 1px solid var(--line);
+  transition: transform var(--dur-fast) var(--ease-cinema), border-color var(--dur-fast);
+}
+.bring:hover { transform: translateY(-6px); border-color: var(--line-strong); }
+.bring__glow { position: absolute; top: -40%; right: -30%; width: 280px; height: 280px; background: radial-gradient(circle, var(--accent-glow), transparent 65%); opacity: 0; transition: opacity var(--dur-mid); }
+.bring:hover .bring__glow { opacity: 0.4; }
+.bring h3 { font-size: var(--step-2); }
+.bring__headline { color: var(--text-mid); font-size: var(--step-0); margin: 0.5rem 0 1.3rem; line-height: 1.45; }
+.bring__label { display: block; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.55rem; }
+.bring__outcomes { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1.2rem; }
+.bring__outcomes li { font-size: var(--step--1); color: #fff; font-weight: 500; padding: 0.3em 0.8em; border-radius: 6px; background: linear-gradient(150deg, rgba(229,9,20,0.9), rgba(122,0,8,0.9)); }
+.bring__caps { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+.bring__caps li { font-size: 0.74rem; color: var(--text-mid); padding: 0.25em 0.7em; border-radius: 100px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+.bring__platforms { font-size: var(--step--1); color: var(--text-lo); }
+
+/* --- Season 2 closing --- */
+.season2 {
+  position: relative;
+  margin-top: clamp(3rem, 8vw, 6rem);
+  padding-block: clamp(3.5rem, 10vw, 7rem);
+  background: radial-gradient(70% 130% at 50% 0%, rgba(229, 9, 20, 0.18), transparent 60%), var(--bg-1);
+  border-block: 1px solid var(--line);
+}
+.season2__inner { max-width: 900px; }
+.season2__inner h2 { font-size: var(--step-3); line-height: 1.05; margin-top: 0.8rem; max-width: 20ch; }
+.season2__actions { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }
+
+/* --- Genres / skills (legacy head styles reused) --- */
+.genres { margin-block: clamp(3rem, 8vw, 6rem); }
+.genres__head { margin-bottom: 2rem; }
+.genres__head h2 { font-size: var(--step-2); margin-top: 0.5rem; }
+
+.genres__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.1rem;
+}
+
+.genre {
+  position: relative;
+  overflow: hidden;
+  padding: 1.6rem 1.5rem 1.8rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, var(--bg-2), var(--bg-1));
+  border: 1px solid var(--line);
+  transition: transform var(--dur-fast) var(--ease-cinema), border-color var(--dur-fast);
+  min-height: 240px;
+}
+.genre:hover { transform: translateY(-6px); border-color: var(--line-strong); }
+.genre__glow {
+  position: absolute;
+  top: -40%;
+  right: -30%;
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, var(--accent-glow), transparent 65%);
+  opacity: 0;
+  transition: opacity var(--dur-mid);
+}
+.genre:hover .genre__glow { opacity: 0.55; }
+.genre h3 { font-size: var(--step-2); }
+.genre__blurb { color: var(--text-lo); margin-top: 0.4rem; margin-bottom: 1.1rem; }
+.genre__tags { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.genre__tags li {
+  font-size: var(--step--1);
+  color: var(--text-mid);
+  padding: 0.3em 0.8em;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+}
+
+/* --- Coming soon --- */
+.soon { margin-block: clamp(3rem, 8vw, 5rem); }
+.soon__card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 2rem clamp(1.5rem, 4vw, 3rem);
+  border-radius: var(--radius-lg);
+}
+.soon__card p { color: var(--text-mid); font-size: var(--step-1); max-width: 48ch; }
+
+/* --- CTA band --- */
+.cta-band {
+  position: relative;
+  margin-block: clamp(3rem, 8vw, 6rem);
+  padding-block: clamp(3rem, 9vw, 6rem);
+  background:
+    radial-gradient(70% 120% at 50% 0%, rgba(229, 9, 20, 0.16), transparent 60%),
+    var(--bg-1);
+  border-block: 1px solid var(--line);
+  text-align: center;
+}
+.cta-band__inner h2 { font-size: var(--step-3); max-width: 16ch; margin-inline: auto; }
+.cta-band__actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 0.9rem; margin-top: 2rem; }

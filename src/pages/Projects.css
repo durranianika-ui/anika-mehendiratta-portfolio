@@ -1,0 +1,24 @@
+.projects__filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+.pfilter {
+  font-size: var(--step--1); color: var(--text-mid);
+  padding: 0.5em 1.1em; border-radius: 100px;
+  border: 1px solid var(--line-strong); background: var(--bg-1);
+  transition: all var(--dur-fast) var(--ease-cinema);
+}
+.pfilter:hover { border-color: var(--text-lo); color: var(--text-hi); }
+.pfilter.is-active { background: var(--text-hi); color: #0a0a0a; border-color: var(--text-hi); }
+
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: clamp(1.2rem, 2.5vw, 2rem) clamp(1rem, 2vw, 1.4rem);
+  /* room for hover scale */
+  padding-bottom: 2rem;
+}
+/* let cards fill the grid cell instead of their fixed row width */
+.projects__grid .card { width: 100%; }
+.projects__grid .card--std { width: 100%; }
+
+@media (max-width: 560px) {
+  .projects__grid { grid-template-columns: 1fr; }
+}

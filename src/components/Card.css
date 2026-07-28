@@ -1,0 +1,91 @@
+.card { position: relative; flex: 0 0 auto; scroll-snap-align: start; }
+.card--std { width: clamp(260px, 30vw, 360px); }
+.card--wide { width: clamp(320px, 42vw, 500px); }
+
+.card__link {
+  display: block; position: relative; width: 100%;
+  border-radius: var(--radius);
+  transition: transform 0.45s var(--ease-cinema);
+  transform-origin: center bottom;
+  will-change: transform;
+  text-align: left;
+}
+
+.card__media {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-2);
+  box-shadow: var(--shadow-card);
+  aspect-ratio: 16 / 9;
+}
+.card__art { transition: transform var(--dur-slow) var(--ease-cinema); }
+.card__art :where(img) { filter: saturate(1.05) brightness(0.88) contrast(1.05); }
+.card__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity var(--dur-mid); z-index: 1; }
+
+.card__progress { position: absolute; left: 12px; right: 12px; bottom: 10px; height: 3px; border-radius: 3px; background: rgba(255,255,255,0.28); overflow: hidden; z-index: 2; }
+.card__progress i { display: block; height: 100%; background: var(--accent); }
+
+.card__preview-glow {
+  position: absolute; inset: 0;
+  background: radial-gradient(70% 60% at 50% 100%, rgba(229, 9, 20, 0.28), transparent 65%);
+  opacity: 0; transition: opacity var(--dur-mid) var(--ease-cinema); pointer-events: none;
+}
+
+/* always-visible result badge — sells impact on the thumbnail */
+.card__result {
+  position: absolute; top: 0.7rem; left: 0.7rem; z-index: 2;
+  font-family: var(--font-display); font-weight: 800;
+  font-size: var(--step-0); color: #fff;
+  padding: 0.2em 0.6em; border-radius: 6px;
+  background: linear-gradient(150deg, var(--accent), #7a0008);
+  box-shadow: 0 6px 18px -6px var(--accent-glow);
+  transition: opacity var(--dur-fast);
+}
+.card__link:hover .card__result { opacity: 0; }
+
+/* resting title under the card */
+.card__resting {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--step-0);
+  color: var(--text-mid);
+  transition: opacity var(--dur-fast);
+}
+
+/* hover reveal panel — overlays the media */
+.card__reveal {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 2.4rem 1rem 1rem;
+  background: linear-gradient(0deg, rgba(0,0,0,0.94) 12%, rgba(0,0,0,0.5) 55%, transparent);
+  border-radius: 0 0 var(--radius) var(--radius);
+  opacity: 0; transform: translateY(10px); pointer-events: none;
+  transition: opacity 0.3s var(--ease-soft) 0.06s, transform 0.4s var(--ease-cinema) 0.06s;
+  z-index: 3;
+}
+.card__actions { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.55rem; }
+.card__btn { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; }
+.card__btn--play { background: var(--text-hi); color: #000; }
+.card__btn--ring { border: 1.5px solid var(--text-faint); color: var(--text-hi); }
+.card__match { color: #46d369; font-weight: 600; font-size: var(--step--1); margin-left: auto; }
+.card__title { font-size: var(--step-1); margin-bottom: 0.3rem; }
+.card__meta { display: flex; align-items: center; gap: 0.5rem; color: var(--text-lo); font-size: var(--step--1); margin-bottom: 0.55rem; }
+.card__stat { color: var(--accent-soft); font-weight: 700; font-family: var(--font-display); }
+.card__dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-faint); }
+.card__tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.card__tags span { font-size: 0.66rem; color: var(--text-mid); padding: 0.18em 0.6em; border: 1px solid var(--line-strong); border-radius: 100px; }
+
+@media (hover: hover) {
+  .card__link:hover, .card__link:focus-visible { transform: scale(1.09) translateY(-6px); z-index: 6; }
+  .card__link:hover .card__art :where(img) { transform: scale(1.08); filter: saturate(1.14) brightness(1) contrast(1.05); }
+  .card__link:hover .card__video { opacity: 1; }
+  .card__link:hover .card__preview-glow { opacity: 1; }
+  .card__link:hover .card__resting, .card__link:focus-visible .card__resting { opacity: 0; }
+  .card__link:hover .card__reveal, .card__link:focus-visible .card__reveal { opacity: 1; transform: translateY(0); pointer-events: auto; }
+}
+@media (hover: none) {
+  .card__reveal { display: none; }
+  .card__resting { font-size: var(--step--1); }
+}

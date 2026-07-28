@@ -1,0 +1,58 @@
+.cap { position: relative; flex: 0 0 auto; width: clamp(260px, 30vw, 340px); scroll-snap-align: start; }
+
+.cap__link { display: block; width: 100%; text-align: left; transition: transform 0.45s var(--ease-cinema); transform-origin: center bottom; }
+.cap__media {
+  position: relative; aspect-ratio: 16 / 9;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--bg-2); box-shadow: var(--shadow-card);
+}
+.cap__art :where(img) { filter: saturate(1.02) brightness(0.7) contrast(1.03); transition: transform var(--dur-slow) var(--ease-cinema), filter var(--dur-mid); }
+.cap__shade { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,0.55), transparent 55%); }
+
+.cap__title {
+  display: block; margin-top: 0.6rem;
+  font-family: var(--font-display); font-weight: 600;
+  font-size: var(--step-0); color: var(--text-hi);
+}
+
+/* hover reveal overlay (in-media, never clips) */
+.cap__reveal {
+  position: absolute; inset: 0; z-index: 2;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  gap: 0.6rem; padding: 1rem 1.1rem;
+  background: linear-gradient(0deg, rgba(0,0,0,0.92) 15%, rgba(0,0,0,0.4) 60%, transparent);
+  opacity: 0; transform: translateY(8px);
+  transition: opacity 0.3s var(--ease-soft), transform 0.35s var(--ease-cinema);
+}
+.cap__value { color: var(--text-hi); font-size: var(--step--1); line-height: 1.4; }
+.cap__chips { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.cap__chips span { font-size: 0.66rem; color: var(--text-mid); padding: 0.2em 0.6em; border: 1px solid var(--line-strong); border-radius: 100px; }
+.cap__chips .cap__more { color: var(--accent-soft); border-color: rgba(229,9,20,0.5); }
+.cap__explore { color: var(--accent-soft); font-weight: 600; font-size: var(--step--1); }
+
+@media (hover: hover) {
+  .cap__link:hover, .cap__link:focus-visible { transform: scale(1.06) translateY(-5px); z-index: 6; }
+  .cap__link:hover .cap__art :where(img) { transform: scale(1.06); }
+  .cap__link:hover .cap__reveal, .cap__link:focus-visible .cap__reveal { opacity: 1; transform: translateY(0); }
+}
+@media (hover: none) {
+  .cap__reveal { position: static; opacity: 1; transform: none; background: none; padding: 0.6rem 0 0; }
+  .cap__reveal .cap__value { display: none; }
+  .cap__explore { display: none; }
+}
+
+/* --- modal --- */
+.capm { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; padding: clamp(1rem, 4vw, 3rem); background: rgba(0,0,0,0.72); backdrop-filter: blur(10px); }
+.capm__panel { width: 100%; max-width: 640px; max-height: 88vh; overflow: hidden; display: flex; flex-direction: column; background: var(--bg-1); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-card); }
+.capm__hero { position: relative; aspect-ratio: 16 / 7; flex: 0 0 auto; }
+.capm__hero .smartimg :where(img) { filter: brightness(0.5) saturate(1.05); }
+.capm__hero-shade { position: absolute; inset: 0; background: linear-gradient(0deg, var(--bg-1), transparent 70%); }
+.capm__close { position: absolute; top: 0.9rem; right: 1rem; z-index: 2; width: 34px; height: 34px; border-radius: 50%; background: rgba(0,0,0,0.55); color: var(--text-hi); border: 1px solid var(--glass-line); }
+.capm__title { position: absolute; left: 1.4rem; bottom: 1rem; z-index: 2; font-size: var(--step-2); color: var(--text-hi); }
+.capm__body { padding: 1.4rem 1.6rem 1.8rem; overflow-y: auto; }
+.capm__value { color: var(--text-mid); font-size: var(--step-1); line-height: 1.5; margin-bottom: 1.4rem; }
+.capm__section { margin-bottom: 1.3rem; }
+.capm__label { display: block; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.7rem; }
+.capm__chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.capm__chips span { font-size: var(--step--1); color: var(--text-mid); padding: 0.3em 0.8em; border-radius: 100px; background: rgba(255,255,255,0.05); border: 1px solid var(--line); }
+.capm__chips--plat span { color: var(--text-hi); border-color: var(--line-strong); }
