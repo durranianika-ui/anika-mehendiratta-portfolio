@@ -68,10 +68,13 @@ export default function Intro({ onDone }) {
       if (p && typeof p.catch === 'function') p.catch(() => { /* retry on later events / fallback */ })
     }
     const onVisible = () => { if (!document.hidden) tryPlay() }
+    // Reveal as soon as the video is actually advancing, even if 'playing' is missed.
+    const onProgress = () => { if (v.currentTime > 0.05) onPlaying() }
 
     v.addEventListener('loadeddata', tryPlay)
     v.addEventListener('canplay', tryPlay)
     v.addEventListener('playing', onPlaying)
+    v.addEventListener('timeupdate', onProgress)
     v.addEventListener('ended', beginOutro)
     v.addEventListener('error', finish)
     document.addEventListener('visibilitychange', onVisible)
