@@ -50,7 +50,7 @@ export default function Home() {
         </p>
       )}
 
-      <div className="home__rows">
+      <div className="home__rows" id="work">
         {/* Project & career rails */}
         <Row label={continueRow.label} kind={continueRow.kind} items={projects.filter(continueRow.filter)} />
         <TopTen label="Top Career Wins" items={topTen.map(byId).filter(Boolean)} />

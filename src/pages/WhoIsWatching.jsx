@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { audienceProfiles } from '../data/content.js'
+import { audienceProfiles, profile } from '../data/content.js'
 import { useSound } from '../context/SoundContext.jsx'
 import PersonaAvatar from '../components/PersonaAvatar.jsx'
 import ALogo from '../components/ALogo.jsx'
@@ -34,6 +35,12 @@ export default function ProfileSelect({ onSelect, onReplay }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <nav className="who__shortcuts" aria-label="Quick actions">
+        <a href={profile.resumeFile} download className="who__sc who__sc--primary" onMouseEnter={() => sound.playOnce('hover')}>Download CV</a>
+        <a href={profile.socials.LinkedIn} target="_blank" rel="noreferrer noopener" className="who__sc" onMouseEnter={() => sound.playOnce('hover')}>LinkedIn</a>
+        <a href={profile.socials.Email} className="who__sc" onMouseEnter={() => sound.playOnce('hover')}>Email</a>
+      </nav>
+
       <div className="who__inner">
         <ALogo size={40} className="who__logo" />
 
