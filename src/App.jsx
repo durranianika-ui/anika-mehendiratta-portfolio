@@ -6,9 +6,10 @@ import Navbar from './components/Navbar.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import RouteLoading from './components/RouteLoading.jsx'
 import Intro from './components/Intro.jsx'
+import ProfileSelect from './pages/WhoIsWatching.jsx'
 import { useProfile } from './context/ProfileContext.jsx'
+import { useSound } from './context/SoundContext.jsx'
 
-const WhoIsWatching = lazy(() => import('./pages/WhoIsWatching.jsx'))
 const Browse = lazy(() => import('./pages/Home.jsx'))
 const Professional = lazy(() => import('./pages/Professional.jsx'))
 const Skills = lazy(() => import('./pages/Skills.jsx'))
@@ -19,24 +20,83 @@ const Resume = lazy(() => import('./pages/Resume.jsx'))
 const HireMe = lazy(() => import('./pages/HireMe.jsx'))
 const AskAnika = lazy(() => import('./pages/AskAnika.jsx'))
 
+const INTRO_SEEN_KEY = 'portfolioIntroSeen'
+
+// Explicit application states. Exactly ONE is ever rendered.
+//   INTRO            → the full-screen intro video, nothing else
+//   PROFILE_SELECTION→ the full-screen "Who's Watching?" screen, nothing else
+//   PROFILE_LOADING  → a brief loading transition after a profile is chosen
+//   BROWSE           → the real portfolio; ONLY here does the navigation mount
+function readIntroSeen() {
+  try { return sessionStorage.getItem(INTRO_SEEN_KEY) === '1' } catch { return false }
+}
+
 export default function App() {
   const location = useLocation()
-  const { id: profileId } = useProfile()
+  const navigate = useNavigate()
+  const { id: profileId, setProfile, clearProfile } = useProfile()
+  const sound = useSound()
 
-  // No navbar during the intro (handled inside Entry) or on the profile screen.
-  const bareRoute = location.pathname === '/' || location.pathname === '/who'
+  // Derive the starting state from session + route, per the required flow:
+  //   fresh session at "/"            → INTRO
+  //   returning (profile this session)→ BROWSE
+  //   direct portfolio route, no pick → PROFILE_SELECTION (skip intro)
+  const [appState, setAppState] = useState(() => {
+    if (profileId) return 'BROWSE'
+    if (location.pathname === '/' && !readIntroSeen()) return 'INTRO'
+    return 'PROFILE_SELECTION'
+  })
 
+  // Warm the heavy portfolio chunk while the user is on the startup screens so
+  // the hand-off into BROWSE has no extra loading flash.
+  useEffect(() => {
+    if (appState === 'INTRO' || appState === 'PROFILE_SELECTION') {
+      import('./pages/Home.jsx')
+    }
+  }, [appState])
+
+  const finishIntro = useCallback(() => {
+    try { sessionStorage.setItem(INTRO_SEEN_KEY, '1') } catch { /* noop */ }
+    setAppState('PROFILE_SELECTION') // profile selection is never skipped
+  }, [])
+
+  const selectProfile = useCallback((id) => {
+    sound.playOnce('select')
+    setProfile(id)                 // 1. save (drives personalization + navbar avatar)
+    setAppState('PROFILE_LOADING') // 2. short loading transition
+    window.setTimeout(() => {
+      navigate('/browse', { replace: true }) // 3. route into the portfolio
+      setAppState('BROWSE')                   // 4. mount BROWSE (+ navigation)
+    }, 550)
+  }, [navigate, setProfile, sound])
+
+  const replayIntro = useCallback(() => {
+    try { sessionStorage.removeItem(INTRO_SEEN_KEY) } catch { /* noop */ }
+    clearProfile()
+    setAppState('INTRO')
+  }, [clearProfile])
+
+  const switchProfile = useCallback(() => {
+    clearProfile()
+    setAppState('PROFILE_SELECTION')
+  }, [clearProfile])
+
+  // --- Startup states: render ONLY the state, nothing underneath ---
+  if (appState === 'INTRO') return <Intro onDone={finishIntro} />
+  if (appState === 'PROFILE_SELECTION') return <ProfileSelect onSelect={selectProfile} onReplay={replayIntro} />
+  if (appState === 'PROFILE_LOADING') return <RouteLoading />
+
+  // --- BROWSE: the real application. Navigation exists only here. ---
   return (
     <>
       <div className="grain" aria-hidden="true" />
       <ScrollToTop />
-      {!bareRoute && <Navbar />}
+      <Navbar onSwitchProfile={switchProfile} />
 
       <Suspense fallback={<RouteLoading />}>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<Entry profileId={profileId} />} />
-            <Route path="/who" element={<WhoIsWatching />} />
+            <Route path="/" element={<Navigate to="/browse" replace />} />
             <Route path="/browse" element={<Browse />} />
             <Route path="/professional" element={<Professional />} />
             <Route path="/skills" element={<Skills />} />
@@ -47,6 +107,7 @@ export default function App() {
             <Route path="/hire-me" element={<HireMe />} />
             <Route path="/ask-anika" element={<AskAnika />} />
             <Route path="/title/:id" element={<LegacyTitle />} />
+            <Route path="/who" element={<Navigate to="/browse" replace />} />
             <Route path="/about" element={<Navigate to="/professional" replace />} />
             <Route path="/contact" element={<Navigate to="/hire-me" replace />} />
             <Route path="*" element={<Navigate to="/browse" replace />} />
@@ -55,34 +116,6 @@ export default function App() {
       </Suspense>
     </>
   )
-}
-
-// Root gate / application state machine:
-//   INTRO_VIDEO → PROFILE_SELECTION → LOADING → BROWSE
-// The intro plays once per browser session. Each state only advances after the
-// previous one has completed (video → fade-to-black → onDone), never on a bare
-// timeout, and Browse is never mounted until a profile has been selected.
-function Entry({ profileId }) {
-  const navigate = useNavigate()
-  const [introPlayed, setIntroPlayed] = useState(() => {
-    try { return sessionStorage.getItem('introPlayed') === '1' } catch { return true }
-  })
-
-  // Warm the profile-selection chunk while the intro plays, so the hand-off
-  // from INTRO_VIDEO → PROFILE_SELECTION is seamless (no loading flash).
-  useEffect(() => { if (!introPlayed) import('./pages/WhoIsWatching.jsx') }, [introPlayed])
-
-  const finishIntro = useCallback(() => {
-    try { sessionStorage.setItem('introPlayed', '1') } catch { /* noop */ }
-    setIntroPlayed(true)
-    // Profile selection is never skipped after the intro.
-    navigate('/who', { replace: true })
-  }, [navigate])
-
-  if (!introPlayed) return <Intro onDone={finishIntro} />
-  // Returning within the same session: go straight to the profile screen
-  // (still never auto-entering Browse without a chosen profile).
-  return <Navigate to={profileId ? '/browse' : '/who'} replace />
 }
 
 function LegacyTitle() {

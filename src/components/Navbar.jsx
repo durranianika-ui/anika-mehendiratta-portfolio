@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NavLink, Link, useNavigate } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 import ALogo from './ALogo.jsx'
 import PersonaAvatar from './PersonaAvatar.jsx'
 import { useProfile } from '../context/ProfileContext.jsx'
@@ -15,11 +15,11 @@ const links = [
   { to: '/ask-anika', label: 'Ask Me' },
 ]
 
-export default function Navbar() {
+export default function Navbar({ onSwitchProfile }) {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const navigate = useNavigate()
   const { profile } = useProfile()
+  const switchProfile = () => { if (typeof onSwitchProfile === 'function') onSwitchProfile() }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -47,7 +47,7 @@ export default function Navbar() {
           className="nav__profile"
           aria-label="Switch profile"
           title="Switch profile"
-          onClick={() => navigate('/who')}
+          onClick={switchProfile}
         >
           {profile
             ? <PersonaAvatar variant={profile.id} color={profile.color} size={34} radius={8} className="nav__persona" />
@@ -65,7 +65,7 @@ export default function Navbar() {
             {l.label}
           </NavLink>
         ))}
-        <button className="btn btn--ghost nav__drawerswitch" onClick={() => { setOpen(false); navigate('/who') }}>Switch profile</button>
+        <button className="btn btn--ghost nav__drawerswitch" onClick={() => { setOpen(false); switchProfile() }}>Switch profile</button>
       </div>
     </header>
   )

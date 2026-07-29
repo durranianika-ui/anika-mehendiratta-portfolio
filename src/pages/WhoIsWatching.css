@@ -1,50 +1,68 @@
+/* PROFILE_SELECTION — a controlled full-screen application state, above all. */
 .who {
-  position: relative;
-  min-height: 100svh;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  width: 100vw;
+  min-height: 100dvh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 2rem var(--gutter);
+  overflow: hidden;
   background:
-    radial-gradient(120% 90% at 50% 40%, rgba(30, 30, 36, 0.35), transparent 60%),
+    radial-gradient(120% 90% at 50% 42%, rgba(30, 30, 36, 0.35), transparent 60%),
     #0b0b0d;
   text-align: center;
-  overflow: hidden;
+  padding:
+    calc(env(safe-area-inset-top) + 24px)
+    24px
+    calc(env(safe-area-inset-bottom) + 24px);
 }
-/* subtle vignette */
+/* soft vignette */
 .who::after {
   content: '';
   position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(120% 100% at 50% 45%, transparent 55%, rgba(0,0,0,0.6) 100%);
+  background: radial-gradient(120% 100% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+.who__inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .who__logo {
-  position: absolute;
-  top: clamp(1.2rem, 3vw, 2.2rem);
-  left: clamp(1.2rem, 4vw, 3rem);
-  z-index: 2;
+  display: block;
   line-height: 0;
+  margin-bottom: clamp(1rem, 2.4vw, 1.6rem);
   filter: drop-shadow(0 0 8px rgba(229, 9, 20, 0.35));
 }
-
-.who__inner { position: relative; z-index: 1; width: 100%; max-width: 1000px; }
 
 .who__title {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: clamp(2.2rem, 1.3rem + 3.6vw, 3.5rem);
+  font-size: clamp(2.4rem, 1.4rem + 2.6vw, 3.75rem); /* ~48–64px desktop */
+  line-height: 1.05;
   color: #fff;
   letter-spacing: -0.005em;
-  margin-bottom: clamp(2.4rem, 5vw, 3.6rem);
+  margin-bottom: clamp(2rem, 4vw, 3.2rem);
 }
 
+/* Desktop: one centered row — four personas + Add Profile. */
 .who__profiles {
   list-style: none;
   display: flex;
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: flex-start;
-  gap: clamp(1.2rem, 2.6vw, 2.2rem);
+  gap: clamp(28px, 3vw, 40px);
+  width: 100%;
 }
 .who__item { display: flex; }
 
@@ -53,10 +71,11 @@
   flex-direction: column;
   align-items: center;
   gap: 0.85rem;
-  width: clamp(120px, 12vw, 155px);
+  width: clamp(140px, 12vw, 170px);
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0;
 }
 .who__tile {
   width: 100%;
@@ -64,61 +83,96 @@
   border-radius: 12px;
   overflow: hidden;
   border: 3px solid transparent;
-  transition: transform 0.28s var(--ease-cinema), border-color 0.22s, box-shadow 0.28s;
+  transition: transform 0.26s var(--ease-cinema), border-color 0.2s, box-shadow 0.26s;
 }
 .who__tile svg { width: 100%; height: 100%; display: block; }
 
-/* Add Profile — grey circle with + (reference) */
+/* Add Profile — grey circle with + */
 .who__add {
   display: grid; place-items: center;
-  width: 100%; aspect-ratio: 1; border-radius: 50%;
+  width: 78%; aspect-ratio: 1; margin: 0 auto;
+  border-radius: 50%;
   background: #2a2a2e;
-  transition: transform 0.28s var(--ease-cinema), background 0.22s;
+  transition: transform 0.26s var(--ease-cinema), background 0.2s;
 }
-.who__plus { font-size: clamp(2.4rem, 6vw, 3.6rem); color: #b3b3b3; font-weight: 200; line-height: 1; }
+.who__plus { font-size: clamp(2rem, 3vw, 2.8rem); color: #b3b3b3; font-weight: 200; line-height: 1; }
 
 .who__card:hover .who__tile,
-.who__card:focus-visible .who__tile { transform: scale(1.06); border-color: #fff; box-shadow: 0 20px 50px -18px rgba(0,0,0,0.7); }
-.who__card:hover .who__add { transform: scale(1.06); background: #35353a; }
-.who__card:hover .who__plus { color: #fff; }
+.who__card:focus-visible .who__tile { transform: scale(1.06); border-color: #fff; box-shadow: 0 20px 50px -18px rgba(0, 0, 0, 0.7); }
+.who__card:hover .who__add,
+.who__card:focus-visible .who__add { transform: scale(1.06); background: #35353a; }
+.who__card:hover .who__plus,
+.who__card:focus-visible .who__plus { color: #fff; }
 .who__card:focus-visible { outline: none; }
-.who__card:focus-visible .who__add { box-shadow: 0 0 0 3px rgba(255,255,255,0.4); }
+.who__card:focus-visible .who__tile { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.6); }
+.who__card:focus-visible .who__add { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5); }
 
 .who__name {
   font-family: var(--font-body);
-  font-size: var(--step-0);
+  font-size: clamp(16px, 1.1vw, 18px);
   font-weight: 400;
-  color: #808088;
-  transition: color 0.22s;
+  color: #a3a3ab;
+  transition: color 0.2s;
   line-height: 1.25;
 }
-.who__card:hover .who__name, .who__card:focus-visible .who__name { color: #fff; }
+.who__card:hover .who__name,
+.who__card:focus-visible .who__name { color: #fff; }
 
 .who__manage {
-  margin-top: clamp(2.5rem, 6vw, 4rem);
-  font-size: 0.86rem;
+  margin-top: clamp(2rem, 4vw, 3.4rem);
+  font-size: 0.82rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #808088;
+  color: #9a9aa2;
   padding: 0.7em 1.5em;
   border: 1px solid #5a5a5f;
   border-radius: 3px;
+  cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
 }
-.who__manage:hover { color: #fff; border-color: #fff; }
+.who__manage:hover, .who__manage:focus-visible { color: #fff; border-color: #fff; }
 
-.who__settings { margin-top: 1.2rem; }
-.who__replay { color: var(--accent-soft); font-size: var(--step--1); font-weight: 600; padding: 0.4em 0.9em; }
+.who__settings { margin-top: 1rem; }
+.who__replay { color: var(--accent-soft); font-size: var(--step--1); font-weight: 600; padding: 0.4em 0.9em; cursor: pointer; }
 .who__replay:hover { color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
   .who__card:hover .who__tile, .who__card:hover .who__add { transform: none; }
 }
 
-/* Mobile: 2×2 grid + Add Profile centered beneath (reference) */
-@media (max-width: 720px) {
-  .who__profiles { flex-wrap: wrap; max-width: 340px; margin-inline: auto; gap: 1.4rem 1.6rem; }
-  .who__item { flex: 0 0 calc(50% - 0.8rem); justify-content: center; }
-  .who__item--add { flex: 0 0 100%; }
-  .who__card { width: clamp(120px, 40vw, 150px); }
+/* -------- Mobile (≤767px): 2-column grid, Add Profile centered beneath. ---- */
+@media (max-width: 767px) {
+  .who__logo { margin-bottom: 0.9rem; }
+  .who__logo svg, .who__logo img { width: clamp(34px, 9vw, 44px) !important; height: auto !important; }
+
+  .who__title {
+    font-size: clamp(30px, 8vw, 42px);
+    margin-bottom: clamp(1.4rem, 5vw, 2rem);
+  }
+
+  .who__profiles {
+    flex-wrap: wrap;
+    max-width: 360px;
+    margin-inline: auto;
+    column-gap: 28px;
+    row-gap: 30px;
+  }
+  .who__item {
+    flex: 0 0 calc(50% - 14px);
+    justify-content: center;
+  }
+  .who__item--add {
+    flex: 0 0 100%;
+  }
+  .who__card { width: clamp(112px, 34vw, 145px); }
+
+  .who__manage { margin-top: 1.8rem; }
+}
+
+/* Short landscape phones: keep it inside the viewport. */
+@media (max-height: 560px) {
+  .who__title { margin-bottom: 1.2rem; }
+  .who__logo { margin-bottom: 0.6rem; }
+  .who__card { width: clamp(96px, 20vw, 120px); }
+  .who__manage { margin-top: 1.2rem; }
 }

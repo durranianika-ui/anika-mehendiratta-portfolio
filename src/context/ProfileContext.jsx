@@ -3,21 +3,23 @@ import { audienceProfiles } from '../data/content.js'
 
 const ProfileCtx = createContext(null)
 
-// Persist selection in sessionStorage so refresh keeps you in-portfolio for the
-// same tab, but a new browser session replays the intro / re-asks.
+// Persist selection in sessionStorage so a refresh keeps you in-portfolio for
+// the same tab, but a new browser session replays the intro / re-asks.
+const PROFILE_KEY = 'portfolioSelectedProfile'
+
 export function ProfileProvider({ children }) {
   const [id, setId] = useState(() => {
-    try { return localStorage.getItem('watchProfile') || null } catch { return null }
+    try { return sessionStorage.getItem(PROFILE_KEY) || null } catch { return null }
   })
 
   const setProfile = useCallback((pid) => {
     setId(pid)
-    try { localStorage.setItem('watchProfile', pid) } catch { /* noop */ }
+    try { sessionStorage.setItem(PROFILE_KEY, pid) } catch { /* noop */ }
   }, [])
 
   const clearProfile = useCallback(() => {
     setId(null)
-    try { localStorage.removeItem('watchProfile') } catch { /* noop */ }
+    try { sessionStorage.removeItem(PROFILE_KEY) } catch { /* noop */ }
   }, [])
 
   const profile = useMemo(() => audienceProfiles.find((p) => p.id === id) || null, [id])
