@@ -1,39 +1,78 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import './Intro.css'
 
 const BASE = import.meta.env.BASE_URL
 const DESKTOP_MP4 = `${BASE}intro.mp4`
-const MOBILE_MP4 = `${BASE}intro-mobile.mp4` // iOS-safe H.264 (Main, yuv420p, faststart)
+const MOBILE_WEBP = `${BASE}intro-mobile.webp` // animated image — no autoplay policy on iOS
 
 const isMobileViewport = () =>
   typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
 
+const MOBILE_HOLD_MS = 3100 // ~clip duration
+
 /**
- * INTRO state — plays ONLY the intro video, full-viewport, no controls.
+ * INTRO state.
  *
- * The <video> is created imperatively so `muted`/`playsinline` are guaranteed
- * present on the element BEFORE it enters the DOM — the only reliable way to get
- * iOS Safari to honor inline muted autoplay (JSX sets `muted` as a property too
- * late, so iOS blocks it and shows a play button). H.264 MP4 only — iOS WebM/VP9
- * support is unreliable and can fail to fall back.
+ * Mobile: iOS repeatedly blocks inline video autoplay (Low Power Mode, data
+ * saver, policy) — so we render the intro as an ANIMATED IMAGE (<img>), which
+ * the browser plays automatically with zero autoplay restrictions. It always
+ * shows. Desktop keeps the real video (autoplay works there).
  *
- * A black cover sits over the video until it is actually playing, so a play
- * button / first frame is never visible. Reveal on 'playing'; fade back to black
- * on end/duration → profile. If playback never starts, stay black then continue.
+ * A black cover sits on top until the media is ready, then reveals it; at the
+ * end it fades back to black → profile. Nothing ever dead-ends.
  */
 export default function Intro({ onDone }) {
+  const [isMobile] = useState(isMobileViewport)
+  return isMobile ? <ImageIntro onDone={onDone} /> : <VideoIntro onDone={onDone} />
+}
+
+function ImageIntro({ onDone }) {
+  const doneRef = useRef(false)
+  const holdRef = useRef(0)
+  const [stage, setStage] = useState('cover')
+
+  const finish = useCallback(() => { if (doneRef.current) return; doneRef.current = true; onDone() }, [onDone])
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    const fallback = window.setTimeout(finish, 5000) // if the image never loads
+    return () => { window.clearTimeout(fallback); window.clearTimeout(holdRef.current); document.body.style.overflow = '' }
+  }, [finish])
+
+  const onLoaded = () => {
+    setStage('reveal')
+    holdRef.current = window.setTimeout(() => {
+      setStage('out')
+      window.setTimeout(finish, 320)
+    }, MOBILE_HOLD_MS)
+  }
+
+  return (
+    <div className="introv">
+      <div className="introv__host">
+        <img className="introv__video" src={MOBILE_WEBP} alt="" onLoad={onLoaded} onError={finish} draggable="false" />
+      </div>
+      <motion.div
+        className="introv__fade"
+        initial={{ opacity: 1 }}
+        animate={{ opacity: stage === 'reveal' ? 0 : 1 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+      />
+    </div>
+  )
+}
+
+function VideoIntro({ onDone }) {
   const hostRef = useRef(null)
   const doneRef = useRef(false)
   const startedRef = useRef(false)
-  // 'cover' = black over video · 'reveal' = video visible · 'out' = back to black
   const [stage, setStage] = useState('cover')
 
   useEffect(() => {
     const host = hostRef.current
     if (!host) return
     document.body.style.overflow = 'hidden'
-    const isMobile = isMobileViewport()
 
     const v = document.createElement('video')
     v.className = 'introv__video'
@@ -41,12 +80,10 @@ export default function Intro({ onDone }) {
     v.defaultMuted = true
     v.setAttribute('muted', '')
     v.setAttribute('playsinline', '')
-    v.setAttribute('webkit-playsinline', '')
     v.setAttribute('preload', 'auto')
-    v.setAttribute('autoplay', '') // safe now — muted is already set on the element
+    v.setAttribute('autoplay', '')
     v.controls = false
-    v.disablePictureInPicture = true
-    v.src = isMobile ? MOBILE_MP4 : DESKTOP_MP4
+    v.src = DESKTOP_MP4
 
     let outroTimer
     let fallbackTimer
@@ -59,16 +96,10 @@ export default function Intro({ onDone }) {
       startedRef.current = true
       window.clearTimeout(fallbackTimer)
       setStage('reveal')
-      const d = Number.isFinite(v.duration) && v.duration > 0 ? v.duration : (isMobile ? 3 : 4)
+      const d = Number.isFinite(v.duration) && v.duration > 0 ? v.duration : 4
       outroTimer = window.setTimeout(beginOutro, d * 1000)
     }
-    const tryPlay = () => {
-      v.muted = true
-      const p = v.play()
-      if (p && typeof p.catch === 'function') p.catch(() => { /* retry on later events / fallback */ })
-    }
-    const onVisible = () => { if (!document.hidden) tryPlay() }
-    // Reveal as soon as the video is actually advancing, even if 'playing' is missed.
+    const tryPlay = () => { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}) }
     const onProgress = () => { if (v.currentTime > 0.05) onPlaying() }
 
     v.addEventListener('loadeddata', tryPlay)
@@ -77,13 +108,11 @@ export default function Intro({ onDone }) {
     v.addEventListener('timeupdate', onProgress)
     v.addEventListener('ended', beginOutro)
     v.addEventListener('error', finish)
-    document.addEventListener('visibilitychange', onVisible)
 
     host.appendChild(v)
     v.load()
     tryPlay()
 
-    // If playback never actually starts, don't sit on black forever.
     fallbackTimer = window.setTimeout(() => { if (!startedRef.current) finish() }, 3000)
     capTimer = window.setTimeout(finish, 9000)
 
@@ -91,7 +120,6 @@ export default function Intro({ onDone }) {
       window.clearTimeout(outroTimer)
       window.clearTimeout(fallbackTimer)
       window.clearTimeout(capTimer)
-      document.removeEventListener('visibilitychange', onVisible)
       try { v.pause() } catch { /* noop */ }
       v.removeAttribute('src')
       if (v.parentNode) v.parentNode.removeChild(v)
