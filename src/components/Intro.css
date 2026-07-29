@@ -4,19 +4,44 @@
   z-index: 9999;
   display: grid;
   place-items: center;
-  background: #0d0d0f;
+  background: #000;
+  overflow: hidden;
 }
-.intro__mark { position: relative; display: inline-flex; align-items: center; }
-.intro__word {
-  font-size: clamp(1.5rem, 1rem + 3vw, 2.6rem);
-  letter-spacing: 0.14em;
-  color: #e50914;
-  text-shadow: 0 0 26px rgba(229, 9, 20, 0.45);
-}
-.intro__sparkle {
+
+/* red light "curtains" at the edges, like the reference */
+.intro__curtain {
   position: absolute;
-  right: -1.4em;
-  bottom: -0.4em;
-  font-size: 0.7rem;
-  color: #cfcfd4;
+  top: 0; bottom: 0;
+  width: 22vw;
+  pointer-events: none;
+  opacity: 0.85;
+  animation: curtainBreathe 3s var(--ease-soft) infinite alternate;
+}
+.intro__curtain--l { left: 0; background: linear-gradient(90deg, rgba(229,9,20,0.55), rgba(180,6,16,0.12) 45%, transparent 80%); }
+.intro__curtain--r { right: 0; background: linear-gradient(270deg, rgba(229,9,20,0.55), rgba(180,6,16,0.12) 45%, transparent 80%); }
+@keyframes curtainBreathe { 0% { opacity: 0.55; } 100% { opacity: 0.95; } }
+
+.intro__wordmark {
+  position: relative;
+  width: min(62vw, 620px);
+  height: auto;
+  filter: drop-shadow(0 0 40px rgba(229, 9, 20, 0.35));
+  will-change: transform, opacity, filter;
+}
+
+/* white light sweep across the wordmark */
+.intro__sweep {
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 50%;
+  width: 32vw;
+  transform: translateX(-50%);
+  background: linear-gradient(100deg, transparent 42%, rgba(255,255,255,0.5) 50%, transparent 58%);
+  mix-blend-mode: screen;
+  filter: blur(3px);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro__curtain, .intro__sweep { animation: none; }
 }

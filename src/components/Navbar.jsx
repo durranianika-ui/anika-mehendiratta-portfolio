@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
-import { useProfile } from '../context/ProfileContext.jsx'
-import Wordmark from './Wordmark.jsx'
-import MonsterAvatar from './MonsterAvatar.jsx'
+import ALogo from './ALogo.jsx'
 import './Navbar.css'
 
 const links = [
@@ -18,7 +16,6 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
-  const { profile } = useProfile()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -28,14 +25,11 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const color = profile?.color || '#22b8dd'
-  const seed = profile?.seed || 2
-
   return (
     <header className={`nav ${scrolled ? 'is-scrolled' : ''}`}>
       <div className="nav__inner container">
-        <Link to="/browse" className="nav__brand" aria-label="Anika Mehendiratta — Home">
-          <Wordmark className="nav__wordmark" />
+        <Link to="/browse" className="nav__brand" aria-label="Home">
+          <ALogo size={34} className="nav__logo" />
         </Link>
 
         <nav className="nav__links" aria-label="Primary">
@@ -51,7 +45,7 @@ export default function Navbar() {
           aria-label="Switch profile"
           onClick={() => navigate('/who')}
         >
-          <MonsterAvatar color={color} seed={seed} size={34} radius={7} title="" />
+          <ALogo size={30} alt="" />
         </button>
 
         <button className={`nav__burger ${open ? 'is-open' : ''}`} aria-label="Menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}>

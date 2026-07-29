@@ -73,10 +73,14 @@ function makeEngine() {
     modalOpen: () => tone({ freq: 300, type: 'sine', dur: 0.2, vol: 0.04, glideTo: 620 }),
     modalClose: () => tone({ freq: 620, type: 'sine', dur: 0.18, vol: 0.035, glideTo: 260 }),
     ident: () => {
-      // sonic ident for the A intro — a rising bloom + shimmer
-      noiseSwoosh({ dur: 1.1, vol: 0.05, from: 200, to: 3000 })
-      tone({ freq: 110, type: 'sine', dur: 1.4, vol: 0.06, glideTo: 220 })
-      ;[659, 880, 1319].forEach((f, i) => tone({ freq: f, type: 'sine', dur: 0.5, vol: 0.03, delay: 0.9 + i * 0.06 }))
+      // Cinematic startup ident: deep sub, low impact, rising bloom, wide shimmer chord.
+      tone({ freq: 42, type: 'sine', dur: 1.8, vol: 0.09, glideTo: 58 })          // sub bass
+      tone({ freq: 84, type: 'sine', dur: 1.6, vol: 0.05, glideTo: 112 })         // low body
+      noiseSwoosh({ dur: 0.5, vol: 0.06, from: 60, to: 900 })                     // impact whoosh
+      noiseSwoosh({ dur: 1.2, vol: 0.045, from: 300, to: 3400 })                  // rising air
+      tone({ freq: 220, type: 'triangle', dur: 0.9, vol: 0.03, glideTo: 330, delay: 0.15 })
+      // shimmer chord (A major-ish) blooming in
+      ;[440, 554, 659, 880, 1319].forEach((f, i) => tone({ freq: f, type: 'sine', dur: 0.7, vol: 0.028, delay: 0.85 + i * 0.05 }))
     },
   }
 

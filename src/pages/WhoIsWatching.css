@@ -3,67 +3,59 @@
   display: grid;
   place-items: center;
   padding: 2rem var(--gutter);
-  background: #141414;
+  background: #0b0b0d;
   text-align: center;
 }
-.who__inner { width: 100%; max-width: 1000px; }
+.who__inner { display: flex; flex-direction: column; align-items: center; }
 
 .who__title {
   font-family: var(--font-body);
-  font-weight: 400;
-  font-size: clamp(2.2rem, 1.4rem + 3.6vw, 4rem);
+  font-weight: 500;
+  font-size: clamp(2rem, 1.3rem + 3.4vw, 3.5rem);
   color: #fff;
-  letter-spacing: -0.005em;
-  margin-bottom: clamp(2.2rem, 5vw, 3.6rem);
-}
-
-.who__row {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: clamp(1rem, 2.5vw, 2.2rem);
+  letter-spacing: -0.01em;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
 .who__card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
+  gap: 1rem;
   background: none;
   border: none;
   cursor: pointer;
 }
 .who__tile {
-  display: block;
-  line-height: 0;
+  display: grid;
+  place-items: center;
+  width: clamp(140px, 40vw, 190px);
+  height: clamp(140px, 40vw, 190px);
   border-radius: 14px;
   overflow: hidden;
+  background: radial-gradient(60% 60% at 50% 40%, #1a0406, #000);
   border: 3px solid transparent;
-  transition: transform 0.3s var(--ease-cinema), border-color 0.25s;
+  transition: transform 0.35s var(--ease-cinema), border-color 0.25s, box-shadow 0.35s;
 }
+.who__tile .alogo { width: 78%; height: 78%; object-fit: contain; }
 .who__card:hover .who__tile,
-.who__card:focus-visible .who__tile { transform: scale(1.06); border-color: #fff; }
+.who__card:focus-visible .who__tile {
+  transform: scale(1.07);
+  border-color: #fff;
+  box-shadow: 0 24px 60px -20px rgba(229, 9, 20, 0.6);
+}
 .who__card:focus-visible { outline: none; }
-.who__card:focus-visible .who__tile { box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35); }
 
 .who__label {
   font-family: var(--font-body);
-  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+  font-size: clamp(1.1rem, 0.9rem + 0.9vw, 1.5rem);
   font-weight: 400;
   color: #808088;
-  transition: color 0.25s;
+  transition: color 0.3s;
 }
 .who__card:hover .who__label,
 .who__card:focus-visible .who__label { color: #fff; }
 
 @media (prefers-reduced-motion: reduce) {
   .who__card:hover .who__tile, .who__card:focus-visible .who__tile { transform: none; }
-}
-
-/* mobile: 2×2 grid */
-@media (max-width: 720px) {
-  .who__row { flex-wrap: wrap; gap: 1.4rem 1.6rem; max-width: 420px; margin-inline: auto; }
-  .who__row li { flex: 0 0 calc(50% - 0.8rem); }
-  .who__card { width: 100%; }
-  .who__tile svg { width: 100%; height: auto; }
 }

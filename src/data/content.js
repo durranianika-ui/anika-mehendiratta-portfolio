@@ -37,8 +37,8 @@ export const profile = {
     'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2400&q=80', // Dubai skyline
   portrait:
     'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=1200&q=80', // ← replace with a real photo of Anika
-  // Drop a real PDF at /public/anika-mehendiratta-cv.pdf; else the Resume page uses print-to-PDF.
-  resumeFile: '',
+  // Original CV document (served verbatim on Download CV).
+  resumeFile: `${import.meta.env.BASE_URL}Anika-Mehendiratta-CV.docx`,
 }
 
 /* -------- WATCH PROFILES ("Who's Watching?") --------
@@ -46,10 +46,7 @@ export const profile = {
    route = where selecting it lands (all enter the same portfolio).
 */
 export const audienceProfiles = [
-  { id: 'recruiter', name: 'Recruiter', color: '#22b8dd', seed: 2, route: '/browse' },
-  { id: 'hiring-manager', name: 'Hiring Manager', color: '#9aa0a6', seed: 5, route: '/professional' },
-  { id: 'collaborator', name: 'Collaborator', color: '#e8443a', seed: 8, route: '/projects' },
-  { id: 'explorer', name: 'Explorer', color: '#f5a623', seed: 11, route: '/browse' },
+  { id: 'anika', name: 'Anika', route: '/browse' },
 ]
 
 /* -------- HERO METRIC STRIP (CV-true only) -------- */
@@ -428,6 +425,28 @@ export const capabilityRows = [
       { title: 'Python & Technical Automation', img: CIMG.data, value: 'Build practical technical tools that reduce manual effort and improve data reliability.', skills: ['Python automation', 'Data processing', 'Report generation', 'File automation', 'API clients', 'Validation systems', 'Command-line tools', 'Testing', 'Git workflows', 'Structured logging', 'Error handling', 'Offline processing'], platforms: ['Python', 'Git', 'GitHub', 'VS Code', 'OpenPyXL', 'REST APIs'] },
       { title: 'AI-Assisted Development', img: CIMG.ai2, value: 'Accelerate development while maintaining structure, testing and governance.', skills: ['Claude Code', 'Codex', 'GitHub Copilot', 'Prompt-driven development', 'Code review', 'Test generation', 'Documentation', 'Debugging', 'Refactoring', 'Architecture planning', 'Repository analysis', 'Development automation'] },
       { title: 'Knowledge & Documentation', img: CIMG.strategy, value: 'Preserve operational knowledge and reduce dependence on individual employees.', skills: ['Knowledge-base design', 'SOP libraries', 'Business-rule catalogues', 'Technical documentation', 'Process documentation', 'AI-assisted documentation', 'Structured handovers', 'Decision logs', 'Governance registers', 'Training documentation', 'Searchable knowledge systems', 'Version control'] },
+    ],
+  },
+  {
+    label: 'Hospitality Distribution',
+    cards: [
+      { title: 'Direct Booking Growth', img: CIMG.revenue, value: 'Shift demand away from OTAs into profitable direct channels.', skills: ['Direct booking strategy', 'Booking funnel optimisation', 'Rate parity', 'Promotions', 'Guest loyalty', 'Conversion'], platforms: ['Website', 'Google Hotel Ads', 'Meta'] },
+      { title: 'OTA Strategy', img: CIMG.hotel, value: 'Maximise visibility and margin across every OTA.', skills: ['OTA account management', 'Listing optimisation', 'Ranking', 'Content', 'Promotions', 'Reviews'], platforms: ['Booking.com', 'Airbnb', 'Expedia', 'Agoda', 'Trip.com'] },
+      { title: 'Channel Management', img: CIMG.dashboard, value: 'Keep rates, availability and inventory in sync everywhere.', skills: ['Channel manager ops', 'Availability', 'Rate distribution', 'Inventory control', 'Overbooking prevention'], platforms: ['SiteMinder', 'PriceLabs', 'Hostaway', 'Guesty'] },
+      { title: 'Revenue Management', img: CIMG.charts, value: 'The right price, for the right room, at the right time.', skills: ['Dynamic pricing', 'Demand forecasting', 'Occupancy optimisation', 'Yield management', 'Competitor benchmarking', 'Seasonal strategy'] },
+      { title: 'Corporate & B2B Sales', img: CIMG.meeting, value: 'Open steady, high-value corporate demand.', skills: ['Corporate partnerships', 'B2B wholesale', 'Account development', 'Commercial negotiations', 'Corporate housing networks'], platforms: ['SilverDoor', 'AltoVita', 'Hotelbeds', 'WebBeds', 'Amadeus'] },
+      { title: 'Distribution & Acquisition', img: CIMG.resort, value: 'Design the whole distribution mix and grow the portfolio.', skills: ['Distribution strategy', 'Channel mix', 'Market analysis', 'Property acquisition', 'Portfolio performance', 'D2C growth'] },
+    ],
+  },
+  {
+    label: 'Software Development',
+    cards: [
+      { title: 'CRM Systems', img: CIMG.strategy, value: 'Structured CRMs that convert and never drop a lead.', skills: ['CRM architecture', 'Lead register design', 'Sales pipelines', 'Lead scoring', 'SLA workflows', 'Reporting'], platforms: ['Monday.com', 'HubSpot', 'Zoho CRM', 'Respond.io'] },
+      { title: 'Workflow Automation', img: CIMG.code, value: 'Automate the busywork, end to end.', skills: ['Process automation', 'Lead routing', 'Notifications', 'Data sync', 'Approvals', 'Business rules'], platforms: ['n8n', 'Make', 'Zapier'] },
+      { title: 'AI Agents & Claude Code', img: CIMG.ai, value: 'Build and ship with AI in the loop.', skills: ['AI workflow design', 'Prompt engineering', 'AI agents', 'Code review', 'Test generation', 'Documentation'], platforms: ['Claude', 'Claude Code', 'ChatGPT', 'GitHub Copilot', 'Gemini'] },
+      { title: 'API & Integrations', img: CIMG.code, value: 'Make business tools talk to each other reliably.', skills: ['REST APIs', 'JSON', 'Webhooks', 'Auth flows', 'Data mapping', 'Error handling'] },
+      { title: 'Dashboards & Reporting', img: CIMG.dashboard, value: 'Turn scattered data into decisions.', skills: ['Executive dashboards', 'KPI reporting', 'Automated reporting', 'Data visualisation', 'Forecasting'], platforms: ['Looker Studio', 'GA4', 'Sheets', 'Excel'] },
+      { title: 'Web Development', img: CIMG.data, value: 'Modern, fast, cinematic front-ends — like this site.', skills: ['React', 'Vite', 'Responsive UI', 'Motion design', 'Performance', 'Deployment'], platforms: ['React', 'Vite', 'GitHub', 'GitHub Pages'] },
     ],
   },
 ]
