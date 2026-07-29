@@ -7,17 +7,17 @@ const ProfileCtx = createContext(null)
 // same tab, but a new browser session replays the intro / re-asks.
 export function ProfileProvider({ children }) {
   const [id, setId] = useState(() => {
-    try { return sessionStorage.getItem('watchProfile') || null } catch { return null }
+    try { return localStorage.getItem('watchProfile') || null } catch { return null }
   })
 
   const setProfile = useCallback((pid) => {
     setId(pid)
-    try { sessionStorage.setItem('watchProfile', pid) } catch { /* noop */ }
+    try { localStorage.setItem('watchProfile', pid) } catch { /* noop */ }
   }, [])
 
   const clearProfile = useCallback(() => {
     setId(null)
-    try { sessionStorage.removeItem('watchProfile') } catch { /* noop */ }
+    try { localStorage.removeItem('watchProfile') } catch { /* noop */ }
   }, [])
 
   const profile = useMemo(() => audienceProfiles.find((p) => p.id === id) || null, [id])

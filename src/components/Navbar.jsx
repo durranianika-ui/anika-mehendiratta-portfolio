@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { NavLink, Link, useNavigate } from 'react-router-dom'
 import ALogo from './ALogo.jsx'
+import PersonaAvatar from './PersonaAvatar.jsx'
+import { useProfile } from '../context/ProfileContext.jsx'
 import './Navbar.css'
 
 const links = [
@@ -17,6 +19,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+  const { profile } = useProfile()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -43,9 +46,12 @@ export default function Navbar() {
         <button
           className="nav__profile"
           aria-label="Switch profile"
+          title="Switch profile"
           onClick={() => navigate('/who')}
         >
-          <ALogo size={30} alt="" />
+          {profile
+            ? <PersonaAvatar variant={profile.id} color={profile.color} size={34} radius={8} className="nav__persona" />
+            : <ALogo size={30} alt="" />}
         </button>
 
         <button className={`nav__burger ${open ? 'is-open' : ''}`} aria-label="Menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}>

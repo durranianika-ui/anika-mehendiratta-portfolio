@@ -1,47 +1,66 @@
-import { useEffect } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useSound } from '../context/SoundContext.jsx'
 import './Intro.css'
 
-const WORDMARK = `${import.meta.env.BASE_URL}brand/anika-wordmark.png`
+const A = `${import.meta.env.BASE_URL}brand/a.png`
+const WORDMARK = `${import.meta.env.BASE_URL}brand/anika.png`
 
 /**
- * Cinematic name intro — the ANIKA wordmark blooms in with a red light sweep,
- * holds, then dilates away. ~1.8s. Original startup ident on entry.
+ * Cinematic entry: the A icon reveals, then transitions into the ANIKA
+ * wordmark, then continues to profile selection. Transparent assets, no boxes.
  */
 export default function Intro({ onDone }) {
   const sound = useSound()
+  const [phase, setPhase] = useState(0) // 0 = A icon, 1 = ANIKA wordmark
+
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     sound.playOnce('ident')
-    const t = setTimeout(onDone, reduce ? 900 : 1900)
-    return () => clearTimeout(t)
+    if (reduce) { const t = setTimeout(onDone, 900); return () => clearTimeout(t) }
+    const t1 = setTimeout(() => setPhase(1), 950)
+    const t2 = setTimeout(onDone, 2350)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [onDone, sound])
 
   return (
-    <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
-      <div className="intro__curtain intro__curtain--l" aria-hidden="true" />
-      <div className="intro__curtain intro__curtain--r" aria-hidden="true" />
-
-      <motion.img
-        className="intro__wordmark"
-        src={WORDMARK}
-        alt="Anika"
-        initial={{ opacity: 0, scale: 1.08, filter: 'brightness(0.4)' }}
-        animate={{
-          opacity: [0, 1, 1, 1, 0],
-          scale: [1.08, 1, 1, 1.02, 1.16],
-          filter: ['brightness(0.4)', 'brightness(1.15)', 'brightness(1)', 'brightness(1)', 'brightness(0.6)'],
-        }}
-        transition={{ duration: 1.85, times: [0, 0.22, 0.5, 0.82, 1], ease: [0.4, 0, 0.2, 1] }}
-      />
-      <motion.span
-        className="intro__sweep"
-        aria-hidden="true"
-        initial={{ x: '-140%', opacity: 0 }}
-        animate={{ x: ['-140%', '160%'], opacity: [0, 0.9, 0] }}
-        transition={{ duration: 1.1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      />
+    <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.45 }}>
+      <div className="intro__glow" aria-hidden="true" />
+      <AnimatePresence mode="wait">
+        {phase === 0 ? (
+          <motion.img
+            key="a"
+            className="intro__a"
+            src={A}
+            alt="Anika"
+            initial={{ opacity: 0, scale: 0.6, filter: 'brightness(0.3)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'brightness(1.1)' }}
+            exit={{ opacity: 0, scale: 1.6, filter: 'blur(6px) brightness(0.5)' }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          />
+        ) : (
+          <motion.img
+            key="wm"
+            className="intro__wordmark"
+            src={WORDMARK}
+            alt="Anika"
+            initial={{ opacity: 0, scale: 1.12, filter: 'brightness(0.4)' }}
+            animate={{ opacity: 1, scale: 1, filter: 'brightness(1.05)' }}
+            exit={{ opacity: 0, scale: 1.06 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
+          </motion.img>
+        )}
+      </AnimatePresence>
+      {phase === 1 && (
+        <motion.span
+          className="intro__sweep"
+          aria-hidden="true"
+          initial={{ x: '-140%', opacity: 0 }}
+          animate={{ x: '160%', opacity: [0, 0.85, 0] }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        />
+      )}
     </motion.div>
   )
 }

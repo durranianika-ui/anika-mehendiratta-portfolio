@@ -1,47 +1,54 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { audienceProfiles } from '../data/content.js'
 import { useProfile } from '../context/ProfileContext.jsx'
 import { useSound } from '../context/SoundContext.jsx'
-import ALogo from '../components/ALogo.jsx'
+import PersonaAvatar from '../components/PersonaAvatar.jsx'
 import './WhoIsWatching.css'
-
-const anika = audienceProfiles[0]
 
 export default function WhoIsWatching() {
   const navigate = useNavigate()
   const { setProfile } = useProfile()
   const sound = useSound()
+  const [addMsg, setAddMsg] = useState(false)
 
-  const enter = () => {
+  const choose = (p) => {
     sound.playOnce('select')
-    setProfile(anika.id)
-    setTimeout(() => navigate(anika.route || '/browse'), 620)
+    setProfile(p.id)
+    setTimeout(() => navigate(p.route || '/browse'), 560)
   }
-  const onKey = (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enter() } }
+  const key = (e, fn) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn() } }
 
   return (
     <motion.main className="who" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
       <div className="who__inner">
-        <motion.h1 className="who__title" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
+        <motion.h1 className="who__title" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}>
           Who&rsquo;s Watching?
         </motion.h1>
 
-        <motion.button
-          className="who__card"
-          onClick={enter}
-          onKeyDown={onKey}
-          onMouseEnter={() => sound.playOnce('hover')}
-          aria-label="Enter as Anika"
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-        >
-          <span className="who__tile">
-            <ALogo size={168} alt="Anika" />
-          </span>
-          <span className="who__label">{anika.name}</span>
-        </motion.button>
+        <motion.ul className="who__row" initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.08, delayChildren: 0.15 } } }}>
+          {audienceProfiles.map((p) => (
+            <motion.li key={p.id} variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } } }}>
+              <button className="who__card" onClick={() => choose(p)} onKeyDown={(e) => key(e, () => choose(p))} onMouseEnter={() => sound.playOnce('hover')} aria-label={`Enter as ${p.name}: ${p.subtitle}`}>
+                <span className="who__tile">
+                  <PersonaAvatar variant={p.id} color={p.color} size={168} radius={14} />
+                </span>
+                <span className="who__name">{p.name}</span>
+                <span className="who__sub">{p.subtitle}</span>
+              </button>
+            </motion.li>
+          ))}
+
+          {/* Add Profile (aesthetic only) */}
+          <motion.li variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } } }}>
+            <button className="who__card who__card--add" onClick={() => { sound.playOnce('hover'); setAddMsg(true) }} onKeyDown={(e) => key(e, () => setAddMsg(true))} aria-label="Add profile">
+              <span className="who__tile who__tile--add"><span className="who__plus" aria-hidden="true">+</span></span>
+              <span className="who__name">{addMsg ? 'Coming Soon' : 'Add Profile'}</span>
+              <span className="who__sub">{addMsg ? 'Create your viewing profile' : ''}</span>
+            </button>
+          </motion.li>
+        </motion.ul>
       </div>
     </motion.main>
   )

@@ -37,7 +37,7 @@ export default function Card({ project, kind = 'poster', index = 0 }) {
         <div className="card__media">
           {/* muted hover-preview video where available, else cinematic still */}
           {project.video ? (
-            <video ref={videoRef} className="card__video" src={project.video} muted loop playsInline preload="none" poster={project.banner} />
+            <video ref={videoRef} className="card__video" src={project.video} muted loop playsInline preload="metadata" poster={project.banner} />
           ) : null}
           <SmartImage src={project.banner} alt={project.title} className="card__art" />
           <div className="card__preview-glow" aria-hidden="true" />

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { projects, rows, certifications, topTen, trustedWith, capabilityRows } from '../data/content.js'
 import { pageTransition, stagger, fadeUp } from '../lib/motion.js'
+import { useProfile } from '../context/ProfileContext.jsx'
 import Hero from '../components/Hero.jsx'
 import Row from '../components/Row.jsx'
 import TopTen from '../components/TopTen.jsx'
@@ -28,9 +29,26 @@ function Counter({ value, prefix = '', suffix = '', decimals = 0 }) {
 }
 
 export default function Home() {
+  const { profile } = useProfile()
+
+  // Personalise: bring the selected persona's focus rails to the front.
+  const orderedCaps = useMemo(() => {
+    const emph = profile?.emphasis || []
+    if (!emph.length) return capabilityRows
+    const front = emph.map((l) => capabilityRows.find((r) => r.label === l)).filter(Boolean)
+    const rest = capabilityRows.filter((r) => !emph.includes(r.label))
+    return [...front, ...rest]
+  }, [profile])
+
   return (
     <motion.main {...pageTransition}>
       <Hero />
+
+      {profile && (
+        <p className="home__foryou container">
+          <span className="home__foryou-dot" /> Recommended for {profile.name.toLowerCase() === 'stalker' ? 'the curious' : `the ${profile.name}`}
+        </p>
+      )}
 
       <div className="home__rows">
         {/* Project & career rails */}
@@ -38,8 +56,8 @@ export default function Home() {
         <TopTen label="Top Career Wins" items={topTen.map(byId).filter(Boolean)} />
         <SeasonsRow />
 
-        {/* Middle section — capability rails (what I bring, per domain) */}
-        {capabilityRows.map((r) => (
+        {/* Middle section — capability rails, personalised order */}
+        {orderedCaps.map((r) => (
           <CapabilityRow key={r.label} label={r.label} cards={r.cards} />
         ))}
 

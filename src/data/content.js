@@ -7,6 +7,8 @@
    in /public and referencing "/my-image.jpg".
    ============================================================ */
 
+const VID = `${import.meta.env.BASE_URL}video/` // base-aware /public/video path
+
 /* -------- 1. PROFILE -------- */
 export const profile = {
   firstName: 'Anika',
@@ -46,7 +48,10 @@ export const profile = {
    route = where selecting it lands (all enter the same portfolio).
 */
 export const audienceProfiles = [
-  { id: 'anika', name: 'Anika', route: '/browse' },
+  { id: 'recruiter', name: 'Recruiter', subtitle: 'Looking for the right hire', emoji: '👔', color: '#22b8dd', route: '/browse', emphasis: ['Commercial & Revenue', 'Leadership & Operations', 'Analytics & Reporting'] },
+  { id: 'marketing-manager', name: 'Marketing Manager', subtitle: 'Evaluating marketing expertise', emoji: '📈', color: '#e8443a', route: '/browse', emphasis: ['Marketing & Growth', 'Analytics & Reporting', 'CRM & Lifecycle'] },
+  { id: 'hiring-manager', name: 'Hiring Manager', subtitle: 'Assessing overall business value', emoji: '💼', color: '#f5a623', route: '/browse', emphasis: ['Commercial & Revenue', 'Hospitality Distribution', 'Automation & Systems', 'Leadership & Operations'] },
+  { id: 'stalker', name: 'Stalker', subtitle: 'Just curious', emoji: '👀', color: '#9b59d0', route: '/browse', emphasis: [] },
 ]
 
 /* -------- HERO METRIC STRIP (CV-true only) -------- */
@@ -103,7 +108,7 @@ export const projects = [
     tags: ['Revenue Strategy', 'Direct Bookings', 'Channel Mix', 'Paid Acquisition'],
     poster: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=1200&q=80',
     banner: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=2400&q=80',
-    video: '',
+    video: `${VID}revenue.mp4`,
     impact: [
       { k: '4×', v: 'Direct booking revenue (AED 40K → 160K/mo)' },
       { k: '5% → 16%', v: 'Direct booking contribution' },
@@ -138,7 +143,7 @@ export const projects = [
     tags: ['Dynamic Pricing', 'Rate Parity', 'OTA Distribution', 'Listing Optimisation'],
     poster: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?auto=format&fit=crop&w=1200&q=80',
     banner: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=2400&q=80',
-    video: '',
+    video: `${VID}occupancy.mp4`,
     impact: [
       { k: '50% → 79%', v: 'Average annual occupancy' },
       { k: '100%', v: 'Occupancy at peak periods' },
@@ -172,7 +177,7 @@ export const projects = [
     tags: ['Google Ads', 'Meta Ads', 'CRO', 'ROAS', 'Lead Gen'],
     poster: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?auto=format&fit=crop&w=1200&q=80',
     banner: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=2400&q=80',
-    video: '',
+    video: `${VID}revenue.mp4`,
     impact: [
       { k: '−60%', v: 'Cost per qualified lead (AED 48 → 19)' },
       { k: '46 → 190', v: 'Qualified leads per month' },
@@ -205,7 +210,7 @@ export const projects = [
     tags: ['n8n', 'Claude', 'Gemini', 'Workflow Automation', 'GA4'],
     poster: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80',
     banner: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=2400&q=80',
-    video: '',
+    video: `${VID}automation.mp4`,
     impact: [
       { k: '~90%', v: 'Less weekly reporting effort' },
       { k: '4–5h → 20m', v: 'Time to a campaign report' },
@@ -238,7 +243,7 @@ export const projects = [
     tags: ['Campaign Strategy', 'Meta', 'Google', 'CRM', 'Seasonal Demand'],
     poster: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
     banner: 'https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=2400&q=80',
-    video: '',
+    video: `${VID}city.mp4`,
     impact: [
       { k: '2,200+', v: 'Qualified enquiries' },
       { k: '4', v: 'Hospitality properties' },
@@ -271,7 +276,7 @@ export const projects = [
     tags: ['B2B Distribution', 'Corporate Travel', 'Partnerships', 'Wholesale'],
     poster: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80',
     banner: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2400&q=80',
-    video: '',
+    video: `${VID}automation.mp4`,
     impact: [
       { k: '2', v: 'Corporate networks onboarded (SilverDoor, AltoVita)' },
       { k: 'Fortune 500', v: 'Client organisations reachable' },

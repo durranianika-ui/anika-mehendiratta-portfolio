@@ -45,13 +45,13 @@
 .nav__profile {
   margin-left: auto;
   display: grid; place-items: center;
-  width: 36px; height: 36px; border-radius: 8px; overflow: hidden;
-  background: radial-gradient(60% 60% at 50% 40%, #1a0406, #000);
-  border: 2px solid transparent;
-  transition: transform var(--dur-fast) var(--ease-cinema), border-color var(--dur-fast);
+  width: 40px; height: 40px;
+  background: none; border: none;
+  transition: transform var(--dur-fast) var(--ease-cinema), filter var(--dur-fast);
 }
-.nav__profile .alogo { width: 80%; height: 80%; object-fit: contain; }
-.nav__profile:hover { transform: scale(1.08); border-color: rgba(255, 255, 255, 0.7); }
+.nav__profile .alogo { width: 100%; height: 100%; object-fit: contain; }
+.nav__persona { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 8px; font-size: 1.1rem; line-height: 1; }
+.nav__profile:hover { transform: scale(1.12); filter: drop-shadow(0 0 10px rgba(229,9,20,0.7)); }
 
 .nav__burger { display: none; flex-direction: column; gap: 5px; padding: 8px; margin-left: 0.4rem; }
 .nav__burger span { width: 22px; height: 2px; background: #fff; border-radius: 2px; transition: transform 0.3s var(--ease-cinema), opacity 0.2s; }
