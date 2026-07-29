@@ -30,9 +30,9 @@ export const profile = {
   headline: 'Commercial growth for hospitality & travel — direct revenue, distribution and AI-enabled marketing ops.',
   // Hero background priority: heroGif → heroVideo → heroImage (ken-burns).
   // User-provided GIF (public/hero.gif). Set to '' to fall back to the video below.
-  heroGif: '/hero.gif',
+  heroGif: `${import.meta.env.BASE_URL}hero.gif`,
   // Cinematic hero loop — Dubai Marina at night (Pexels, free/commercial licence).
-  heroVideo: '/hero.mp4',
+  heroVideo: `${import.meta.env.BASE_URL}hero.mp4`,
   heroImage:
     'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=2400&q=80', // Dubai skyline
   portrait:

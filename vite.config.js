@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // Served from https://durranianika-ui.github.io/anika-mehendiratta-portfolio/
+  base: '/anika-mehendiratta-portfolio/',
   plugins: [react()],
   build: {
     // Split vendor chunks for better caching / Lighthouse.
