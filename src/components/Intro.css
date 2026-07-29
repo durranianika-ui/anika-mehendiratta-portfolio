@@ -9,6 +9,11 @@
   overflow: hidden;
 }
 
+.introv__host {
+  position: absolute;
+  inset: 0;
+}
+
 .introv__video {
   position: absolute;
   inset: 0;

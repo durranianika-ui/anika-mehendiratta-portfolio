@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import './Intro.css'
 
 const BASE = import.meta.env.BASE_URL
 const DESKTOP_MP4 = `${BASE}intro.mp4`
-const MOBILE_MP4 = `${BASE}intro-mobile.mp4`   // vertical H.264
-const MOBILE_WEBM = `${BASE}intro-mobile.webm` // vertical VP9 fallback
+const MOBILE_MP4 = `${BASE}intro-mobile.mp4` // iOS-safe H.264 (Main, yuv420p, faststart)
 
 const isMobileViewport = () =>
   typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches
@@ -13,122 +12,93 @@ const isMobileViewport = () =>
 /**
  * INTRO state — plays ONLY the intro video, full-viewport, no controls.
  *
- * iOS autoplay is fragile: with the `autoplay` attribute, Safari decides
- * eligibility at insertion time — and because React sets `muted` as a property
- * (not an attribute) the video can look unmuted at that instant, get blocked,
- * and show a big play button. So we do NOT use the autoplay attribute. Instead
- * we force muted/inline at the attribute level, then start playback via script
- * (muted script-play is permitted inline on iOS) once the media is ready.
+ * The <video> is created imperatively so `muted`/`playsinline` are guaranteed
+ * present on the element BEFORE it enters the DOM — the only reliable way to get
+ * iOS Safari to honor inline muted autoplay (JSX sets `muted` as a property too
+ * late, so iOS blocks it and shows a play button). H.264 MP4 only — iOS WebM/VP9
+ * support is unreliable and can fail to fall back.
  *
- * A black cover sits on top of the video until it is actually playing, so a
- * play button / first frame is never visible. When the clip's own duration
- * elapses (or it ends) we fade back to black (~300ms) → profile. If playback
- * never starts (e.g. Low Power Mode), we stay black briefly then continue —
- * never a play button, never a dead end.
+ * A black cover sits over the video until it is actually playing, so a play
+ * button / first frame is never visible. Reveal on 'playing'; fade back to black
+ * on end/duration → profile. If playback never starts, stay black then continue.
  */
 export default function Intro({ onDone }) {
-  const videoRef = useRef(null)
+  const hostRef = useRef(null)
   const doneRef = useRef(false)
   const startedRef = useRef(false)
   // 'cover' = black over video · 'reveal' = video visible · 'out' = back to black
   const [stage, setStage] = useState('cover')
-  const [isMobile] = useState(isMobileViewport)
-
-  const setVideoRef = useCallback((node) => {
-    videoRef.current = node
-    if (node) {
-      node.defaultMuted = true
-      node.muted = true
-      node.setAttribute('muted', '')
-      node.setAttribute('playsinline', '')
-      node.setAttribute('webkit-playsinline', '')
-    }
-  }, [])
-
-  const finish = useCallback(() => {
-    if (doneRef.current) return
-    doneRef.current = true
-    onDone()
-  }, [onDone])
 
   useEffect(() => {
-    const v = videoRef.current
-    if (!v) return
+    const host = hostRef.current
+    if (!host) return
     document.body.style.overflow = 'hidden'
+    const isMobile = isMobileViewport()
+
+    const v = document.createElement('video')
+    v.className = 'introv__video'
+    v.muted = true
+    v.defaultMuted = true
+    v.setAttribute('muted', '')
+    v.setAttribute('playsinline', '')
+    v.setAttribute('webkit-playsinline', '')
+    v.setAttribute('preload', 'auto')
+    v.setAttribute('autoplay', '') // safe now — muted is already set on the element
+    v.controls = false
+    v.disablePictureInPicture = true
+    v.src = isMobile ? MOBILE_MP4 : DESKTOP_MP4
+
     let outroTimer
     let fallbackTimer
+    let capTimer
 
-    const beginOutro = () => {
-      setStage('out')
-      window.setTimeout(finish, 320)
-    }
-
+    const finish = () => { if (doneRef.current) return; doneRef.current = true; onDone() }
+    const beginOutro = () => { setStage('out'); outroTimer = window.setTimeout(finish, 320) }
     const onPlaying = () => {
       if (startedRef.current) return
       startedRef.current = true
       window.clearTimeout(fallbackTimer)
-      setStage('reveal') // uncover the now-playing video
+      setStage('reveal')
       const d = Number.isFinite(v.duration) && v.duration > 0 ? v.duration : (isMobile ? 3 : 4)
       outroTimer = window.setTimeout(beginOutro, d * 1000)
     }
-
-    const attemptPlay = () => {
-      if (startedRef.current) return
+    const tryPlay = () => {
       v.muted = true
       const p = v.play()
       if (p && typeof p.catch === 'function') p.catch(() => { /* retry on later events / fallback */ })
     }
-    const onReady = () => attemptPlay()
-    const onVisible = () => { if (!document.hidden) attemptPlay() }
+    const onVisible = () => { if (!document.hidden) tryPlay() }
 
-    v.addEventListener('loadedmetadata', onReady)
-    v.addEventListener('loadeddata', onReady)
-    v.addEventListener('canplay', onReady)
+    v.addEventListener('loadeddata', tryPlay)
+    v.addEventListener('canplay', tryPlay)
     v.addEventListener('playing', onPlaying)
+    v.addEventListener('ended', beginOutro)
+    v.addEventListener('error', finish)
     document.addEventListener('visibilitychange', onVisible)
-    if (v.readyState >= 2) attemptPlay()
+
+    host.appendChild(v)
+    v.load()
+    tryPlay()
 
     // If playback never actually starts, don't sit on black forever.
-    fallbackTimer = window.setTimeout(() => { if (!startedRef.current) finish() }, 2600)
-    // Ultimate safety net.
-    const cap = window.setTimeout(finish, 9000)
+    fallbackTimer = window.setTimeout(() => { if (!startedRef.current) finish() }, 3000)
+    capTimer = window.setTimeout(finish, 9000)
 
     return () => {
       window.clearTimeout(outroTimer)
       window.clearTimeout(fallbackTimer)
-      window.clearTimeout(cap)
-      v.removeEventListener('loadedmetadata', onReady)
-      v.removeEventListener('loadeddata', onReady)
-      v.removeEventListener('canplay', onReady)
-      v.removeEventListener('playing', onPlaying)
+      window.clearTimeout(capTimer)
       document.removeEventListener('visibilitychange', onVisible)
+      try { v.pause() } catch { /* noop */ }
+      v.removeAttribute('src')
+      if (v.parentNode) v.parentNode.removeChild(v)
       document.body.style.overflow = ''
     }
-  }, [isMobile, finish])
+  }, [onDone])
 
   return (
     <div className="introv">
-      <video
-        ref={setVideoRef}
-        className="introv__video"
-        muted
-        playsInline
-        preload="auto"
-        controlsList="nodownload noplaybackrate noremoteplayback"
-        disablePictureInPicture
-        disableRemotePlayback
-        onEnded={() => { setStage('out'); window.setTimeout(finish, 320) }}
-        onError={() => finish()}
-      >
-        {isMobile ? (
-          <>
-            <source src={MOBILE_WEBM} type="video/webm" />
-            <source src={MOBILE_MP4} type="video/mp4" />
-          </>
-        ) : (
-          <source src={DESKTOP_MP4} type="video/mp4" />
-        )}
-      </video>
+      <div className="introv__host" ref={hostRef} />
       <motion.div
         className="introv__fade"
         initial={{ opacity: 1 }}
