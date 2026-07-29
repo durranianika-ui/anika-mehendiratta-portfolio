@@ -140,33 +140,43 @@
   .who__card:hover .who__tile, .who__card:hover .who__add { transform: none; }
 }
 
-/* -------- Mobile (≤767px): 2-column grid, Add Profile centered beneath. ---- */
+/* -------- Mobile (≤767px): compact 2-column grid, fits one viewport. ------- */
 @media (max-width: 767px) {
-  .who__logo { margin-bottom: 0.9rem; }
-  .who__logo svg, .who__logo img { width: clamp(34px, 9vw, 44px) !important; height: auto !important; }
+  .who {
+    padding:
+      calc(env(safe-area-inset-top) + 18px)
+      28px
+      calc(env(safe-area-inset-bottom) + 18px);
+  }
+
+  .who__logo { margin-bottom: 0.7rem; width: clamp(28px, 8vw, 34px) !important; height: auto !important; }
 
   .who__title {
-    font-size: clamp(30px, 8vw, 42px);
-    margin-bottom: clamp(1.4rem, 5vw, 2rem);
+    font-size: clamp(30px, 8.6vw, 34px);
+    margin-bottom: 1.2rem;
   }
 
   .who__profiles {
     flex-wrap: wrap;
-    max-width: 360px;
+    max-width: 320px;
     margin-inline: auto;
-    column-gap: 28px;
-    row-gap: 30px;
+    column-gap: 30px;
+    row-gap: 24px;
   }
   .who__item {
-    flex: 0 0 calc(50% - 14px);
+    flex: 0 0 calc(50% - 15px);
     justify-content: center;
   }
   .who__item--add {
     flex: 0 0 100%;
   }
-  .who__card { width: clamp(112px, 34vw, 145px); }
+  .who__card { width: clamp(110px, 30vw, 125px); gap: 0.6rem; }
+  .who__name { font-size: 15px; }
 
-  .who__manage { margin-top: 1.8rem; }
+  .who__add { width: clamp(80px, 22vw, 90px); }
+  .who__plus { font-size: 2rem; }
+
+  .who__manage { margin-top: 1.4rem; }
 }
 
 /* Short landscape phones: keep it inside the viewport. */
