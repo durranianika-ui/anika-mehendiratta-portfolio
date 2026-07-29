@@ -39,7 +39,7 @@ export default function SeasonsRow() {
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: (i % 6) * 0.05 }}
             >
-              <Link to={`/professional#season-${s.season}`} className="scard__link" aria-label={`Season ${s.season}: ${s.title}`} onMouseEnter={() => sound.play('hover')} onClick={() => sound.play('click')}>
+              <Link to="/career" className="scard__link" aria-label={`Season ${s.season}: ${s.title}`} onMouseEnter={() => sound.play('hover')} onClick={() => sound.play('click')}>
                 <div className="scard__media">
                   <SmartImage src={s.art} alt="" />
                   <span className="scard__season">Season {s.season}</span>

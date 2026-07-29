@@ -7,9 +7,9 @@ import './Navbar.css'
 
 const links = [
   { to: '/browse', label: 'Home' },
-  { to: '/professional', label: 'Professional' },
+  { to: '/career', label: 'The Career' },
+  { to: '/projects', label: 'Case Studies' },
   { to: '/skills', label: 'Skills' },
-  { to: '/projects', label: 'Projects' },
   { to: '/achievements', label: 'Awards' },
   { to: '/hire-me', label: 'Hire Me' },
   { to: '/ask-anika', label: 'Ask Me' },

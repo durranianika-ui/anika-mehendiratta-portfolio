@@ -12,6 +12,7 @@ import { useProfile } from './context/ProfileContext.jsx'
 import { useSound } from './context/SoundContext.jsx'
 
 const Browse = lazy(() => import('./pages/Home.jsx'))
+const CareerSeries = lazy(() => import('./pages/CareerSeries.jsx'))
 const Professional = lazy(() => import('./pages/Professional.jsx'))
 const Skills = lazy(() => import('./pages/Skills.jsx'))
 const Projects = lazy(() => import('./pages/Projects.jsx'))
@@ -100,6 +101,7 @@ export default function App() {
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Navigate to="/browse" replace />} />
             <Route path="/browse" element={<Browse />} />
+            <Route path="/career" element={<CareerSeries />} />
             <Route path="/professional" element={<Professional />} />
             <Route path="/skills" element={<Skills />} />
             <Route path="/projects" element={<Projects />} />
