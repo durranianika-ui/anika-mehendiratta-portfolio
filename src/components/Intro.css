@@ -1,18 +1,26 @@
-.intro {
+/* INTRO_VIDEO — full-screen video, black surround, fade-to-black overlay. */
+.introv {
   position: fixed;
   inset: 0;
   z-index: 9999;
   background: #000;
   overflow: hidden;
 }
-.intro__video {
+
+.introv__video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  object-fit: contain;   /* show the whole frame, letterboxed on black */
   background: #000;
+  display: block;
 }
-.intro__video.is-ready { opacity: 1; }
+
+/* fade-to-black on the last frame */
+.introv__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+}

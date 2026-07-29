@@ -1,8 +1,10 @@
 .who {
   position: relative;
   min-height: 100svh;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 2rem var(--gutter);
   background:
     radial-gradient(120% 90% at 50% 40%, rgba(30, 30, 36, 0.35), transparent 60%),

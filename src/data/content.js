@@ -93,7 +93,7 @@ export const highlights = [
 export const projects = [
   {
     id: 'direct-revenue-4x',
-    title: 'The Revenue Transformation',
+    title: 'The 4× Revenue Play',
     category: 'Commercial Growth',
     featured: true,
     year: '2025',
@@ -101,8 +101,8 @@ export const projects = [
     stat: '4×',
     maturity: 'Flagship',
     duration: 'Nov 2025 – Present',
+    logline: 'Direct bookings quadrupled and the OTAs lost their grip on the margin. Here’s exactly how.',
     role: 'Commercial Marketing & OTA Manager — Durrani Group',
-    logline: 'Quadrupling direct bookings and taking back margin from the OTAs.',
     summary:
       'Owned the commercial marketing and channel strategy that grew direct booking revenue 4× and lifted the direct-booking share from 5% to 16% — reducing OTA commission dependency across an 80+ unit holiday-home portfolio.',
     tags: ['Revenue Strategy', 'Direct Bookings', 'Channel Mix', 'Paid Acquisition'],
@@ -137,7 +137,7 @@ export const projects = [
     maturity: 'Revenue',
     duration: '80+ unit portfolio',
     role: 'Commercial Marketing & OTA Manager — Durrani Group',
-    logline: 'From half-empty to nearly full — pricing and distribution at portfolio scale.',
+    logline: 'Half-empty to 79% full across 80+ units — the pricing-and-distribution system behind the swing.',
     summary:
       'Owned OTA distribution and channel strategy across an 80+ unit portfolio and every major channel — using dynamic pricing, listing optimisation and channel expansion to raise average annual occupancy from 50% to 79%.',
     tags: ['Dynamic Pricing', 'Rate Parity', 'OTA Distribution', 'Listing Optimisation'],
@@ -163,7 +163,7 @@ export const projects = [
   },
   {
     id: 'acquisition-efficiency',
-    title: 'Acquisition, Halved',
+    title: 'Acquisition Cost Halved',
     category: 'Customer Acquisition',
     year: '2025',
     match: '97',
@@ -171,7 +171,7 @@ export const projects = [
     maturity: 'Performance',
     duration: 'Ongoing',
     role: 'Commercial Marketing & OTA Manager — Durrani Group',
-    logline: 'Twice the leads, at a third of the cost.',
+    logline: 'Leads got 60% cheaper while demand grew 4× — the counter-intuitive playbook that did both at once.',
     summary:
       'Rebuilt paid acquisition across Google Ads (Search, Demand Gen) and Meta to cut cost per qualified lead by 60% while quadrupling qualified demand — an estimated 4×+ blended return on marketing spend.',
     tags: ['Google Ads', 'Meta Ads', 'CRO', 'ROAS', 'Lead Gen'],
@@ -204,7 +204,7 @@ export const projects = [
     maturity: 'Ops',
     duration: 'Ongoing',
     role: 'Commercial Marketing & OTA Manager — Durrani Group',
-    logline: 'Five hours of reporting, done in twenty minutes.',
+    logline: 'The report that writes itself — five hours of work vanished into twenty minutes. See the build.',
     summary:
       'Implemented AI-assisted reporting and workflow automation with n8n, Claude and Gemini — cutting weekly campaign reporting from 4–5 hours to 20–30 minutes and freeing the team for strategy.',
     tags: ['n8n', 'Claude', 'Gemini', 'Workflow Automation', 'GA4'],
@@ -237,7 +237,7 @@ export const projects = [
     maturity: 'Campaign',
     duration: 'Seasonal',
     role: 'Cluster Marketing Coordinator — Sharjah National Hotels',
-    logline: 'One seasonal push, 2,200+ qualified enquiries, four properties.',
+    logline: 'One season, four properties, 2,200+ qualified enquiries — how a single campaign sold them out.',
     summary:
       'Led the group’s Ramadan digital campaign across four hospitality properties, generating 2,200+ qualified enquiries through coordinated Meta, Google and CRM activation.',
     tags: ['Campaign Strategy', 'Meta', 'Google', 'CRM', 'Seasonal Demand'],
@@ -262,7 +262,7 @@ export const projects = [
   },
   {
     id: 'corporate-distribution',
-    title: 'Into the Corporate Networks',
+    title: 'The Fortune 500 Door',
     category: 'Distribution',
     year: '2025',
     match: '94',
@@ -270,7 +270,7 @@ export const projects = [
     maturity: 'B2B',
     duration: '2025',
     role: 'Commercial Marketing & OTA Manager — Durrani Group',
-    logline: 'Opening the door to Fortune 500 corporate travel.',
+    logline: 'How a holiday-home portfolio landed on the travel desks of Fortune 500 companies.',
     summary:
       'Expanded corporate distribution by onboarding SilverDoor and AltoVita — connecting the portfolio to global corporate travel networks that serve Fortune 500 organisations.',
     tags: ['B2B Distribution', 'Corporate Travel', 'Partnerships', 'Wholesale'],

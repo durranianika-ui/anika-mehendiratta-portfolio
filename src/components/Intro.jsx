@@ -1,43 +1,57 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
-import { useSound } from '../context/SoundContext.jsx'
 import './Intro.css'
 
+// The ONLY intro asset. Swap this file to change the intro — nothing else renders.
 const SRC = `${import.meta.env.BASE_URL}intro.mp4`
 
 /**
- * Full-screen intro video. Black until the video can play, covers the viewport,
- * no scroll, no UI. Fades to profile selection when it ends. Drop any clip at
- * /public/intro.mp4 to replace it.
+ * INTRO_VIDEO state.
+ * Plays the supplied intro video full-screen with no overlays, no CSS logo,
+ * no text. When the video reaches its last frame it fades to black (~300ms),
+ * then — and only then — calls onDone() to advance to PROFILE_SELECTION.
  */
 export default function Intro({ onDone }) {
-  const videoRef = useRef(null)
-  const [ready, setReady] = useState(false)
-  const sound = useSound()
+  const [fading, setFading] = useState(false)
+  const doneRef = useRef(false)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    sound.playOnce('ident')
-    // Safety net: if the video stalls or is missing, continue anyway.
-    const fallback = setTimeout(onDone, reduce ? 600 : 6000)
-    return () => { clearTimeout(fallback); document.body.style.overflow = '' }
-  }, [onDone, sound])
+    // Safety net: if the video never fires 'ended' (stall/decode error),
+    // start the fade after a hard cap so the user is never trapped.
+    const cap = setTimeout(() => setFading(true), 8000)
+    return () => { clearTimeout(cap); document.body.style.overflow = '' }
+  }, [])
+
+  const beginFade = () => setFading(true)
+
+  const handleFadeComplete = () => {
+    // Only advance once the fade-to-black has actually finished.
+    if (fading && !doneRef.current) {
+      doneRef.current = true
+      onDone()
+    }
+  }
 
   return (
-    <motion.div className="intro" initial={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.55 }}>
+    <div className="introv">
       <video
-        ref={videoRef}
-        className={`intro__video ${ready ? 'is-ready' : ''}`}
+        className="introv__video"
         src={SRC}
         autoPlay
         muted
         playsInline
         preload="auto"
-        onCanPlay={() => { setReady(true); videoRef.current?.play?.().catch(() => {}) }}
-        onEnded={onDone}
-        onError={onDone}
+        onEnded={beginFade}
+        onError={beginFade}
       />
-    </motion.div>
+      <motion.div
+        className="introv__fade"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: fading ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+        onAnimationComplete={handleFadeComplete}
+      />
+    </div>
   )
 }

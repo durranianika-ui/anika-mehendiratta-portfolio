@@ -1,4 +1,4 @@
-import { Suspense, lazy, useState, useCallback } from 'react'
+import { Suspense, lazy, useState, useCallback, useEffect } from 'react'
 import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
@@ -57,20 +57,31 @@ export default function App() {
   )
 }
 
-// Root gate: intro (once per browser session) → profile select → portfolio.
+// Root gate / application state machine:
+//   INTRO_VIDEO → PROFILE_SELECTION → LOADING → BROWSE
+// The intro plays once per browser session. Each state only advances after the
+// previous one has completed (video → fade-to-black → onDone), never on a bare
+// timeout, and Browse is never mounted until a profile has been selected.
 function Entry({ profileId }) {
   const navigate = useNavigate()
   const [introPlayed, setIntroPlayed] = useState(() => {
     try { return sessionStorage.getItem('introPlayed') === '1' } catch { return true }
   })
 
+  // Warm the profile-selection chunk while the intro plays, so the hand-off
+  // from INTRO_VIDEO → PROFILE_SELECTION is seamless (no loading flash).
+  useEffect(() => { if (!introPlayed) import('./pages/WhoIsWatching.jsx') }, [introPlayed])
+
   const finishIntro = useCallback(() => {
     try { sessionStorage.setItem('introPlayed', '1') } catch { /* noop */ }
     setIntroPlayed(true)
-    navigate(profileId ? '/browse' : '/who', { replace: true })
-  }, [navigate, profileId])
+    // Profile selection is never skipped after the intro.
+    navigate('/who', { replace: true })
+  }, [navigate])
 
   if (!introPlayed) return <Intro onDone={finishIntro} />
+  // Returning within the same session: go straight to the profile screen
+  // (still never auto-entering Browse without a chosen profile).
   return <Navigate to={profileId ? '/browse' : '/who'} replace />
 }
 

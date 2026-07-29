@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { profile } from '../data/content.js'
-import Wordmark from './Wordmark.jsx'
+import ALogo from './ALogo.jsx'
 import './Footer.css'
 
 export default function Footer() {
@@ -11,7 +11,8 @@ export default function Footer() {
     <footer className="footer">
       <div className="container footer__inner">
         <div className="footer__brand">
-          <Wordmark className="footer__mark" />
+          <ALogo size={30} className="footer__mark" />
+          <p>{profile.firstName} {profile.lastName}</p>
         </div>
 
         <nav className="footer__links" aria-label="Footer">
