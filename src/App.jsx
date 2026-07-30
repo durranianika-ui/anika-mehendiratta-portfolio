@@ -3,7 +3,6 @@ import { Routes, Route, useLocation, useNavigate, Navigate } from 'react-router-
 import { AnimatePresence } from 'framer-motion'
 
 import Navbar from './components/Navbar.jsx'
-import ActionBar from './components/ActionBar.jsx'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import RouteLoading from './components/RouteLoading.jsx'
 import Intro from './components/Intro.jsx'
@@ -93,7 +92,6 @@ export default function App() {
       <div className="grain" aria-hidden="true" />
       <ScrollToTop />
       <Navbar onSwitchProfile={switchProfile} />
-      <ActionBar />
 
       <Suspense fallback={<RouteLoading />}>
         <AnimatePresence mode="wait">

@@ -23,10 +23,6 @@
   --accent-soft: #ff2a35;
   --accent-glow: rgba(229, 9, 20, 0.45);
 
-  /* --- Proof gold: reserved exclusively for achievement metrics --- */
-  --gold: #e4b65a;
-  --gold-deep: #b98a2e;
-
   /* --- Lines --- */
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.16);

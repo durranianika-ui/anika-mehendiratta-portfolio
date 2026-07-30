@@ -63,14 +63,6 @@ export const heroStats = [
   { value: '~90%', label: 'Less manual reporting' },
 ]
 
-/* -------- HERO METRIC WALL — animated proof, CV-true, one canonical number each -------- */
-export const heroMetrics = [
-  { to: 1.4, from: 0, prefix: 'AED ', suffix: 'M+', decimals: 1, label: 'Revenue generated' },
-  { to: 4, from: 0, suffix: '×', decimals: 0, label: 'Direct booking revenue' },
-  { to: 79, from: 50, suffix: '%', decimals: 0, label: 'Occupancy (from 50%)' },
-  { to: 60, from: 0, prefix: '−', suffix: '%', decimals: 0, label: 'Cost per lead' },
-]
-
 /* -------- "TRUSTED WITH" — animated counters (CV-true) -------- */
 export const trustedWith = [
   { value: 1.4, prefix: 'AED ', suffix: 'M+', label: 'Revenue generated', decimals: 1 },
