@@ -476,14 +476,10 @@ export const tools = [
   { group: 'Project Management', items: ['ClickUp', 'Monday.com'] },
 ]
 
-/* -------- 7. SEASONS (career, chronological) --------
-   Presented as a documentary "series". Each season = a chapter of the arc;
-   flagship episodes link to their full case study (to) and carry a headline
-   stat. All CV-true. */
+/* -------- 7. SEASONS (career, chronological) -------- */
 export const seasons = [
   {
     season: 1,
-    theme: 'The Foundations',
     title: 'Co-Founder',
     org: 'Marketing Monkey',
     place: 'India',
@@ -498,7 +494,6 @@ export const seasons = [
   },
   {
     season: 2,
-    theme: 'Hospitality, Commercially',
     title: 'Business Development & Marketing Executive',
     org: 'Hystay Living',
     place: 'India',
@@ -513,7 +508,6 @@ export const seasons = [
   },
   {
     season: 3,
-    theme: 'The Performance Craft',
     title: 'Performance Marketing Executive',
     org: 'Vb Groups',
     place: 'United Arab Emirates',
@@ -522,13 +516,12 @@ export const seasons = [
     art: 'https://images.unsplash.com/photo-1533750349088-cd871a92f312?auto=format&fit=crop&w=1200&q=80',
     episodes: [
       { n: 1, title: 'Paid at Scale', desc: 'Managed Google Ads across multiple business verticals from planning through optimisation and reporting.' },
-      { n: 2, title: '25+ Campaigns', desc: 'Planned and executed 25+ campaigns across paid search, SEO and social media.', stat: '25+' },
+      { n: 2, title: '25+ Campaigns', desc: 'Planned and executed 25+ campaigns across paid search, SEO and social media.' },
       { n: 3, title: 'Executive Reporting', desc: 'Produced performance reports informing monthly budget and creative decisions.' },
     ],
   },
   {
     season: 4,
-    theme: 'Marketing at Scale',
     title: 'Cluster Marketing Coordinator',
     org: 'Sharjah National Hotels',
     place: 'Sharjah, UAE',
@@ -536,15 +529,14 @@ export const seasons = [
     logline: 'Four hotels, always-on demand, standout seasonal campaigns.',
     art: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80',
     episodes: [
-      { n: 1, title: 'The Ramadan Campaign', desc: 'Led the group’s Ramadan digital campaign — 2,200+ qualified enquiries across four properties.', stat: '2,200+', to: '/projects/ramadan-campaign' },
-      { n: 2, title: 'Always-On, Four Hotels', desc: 'Managed always-on digital marketing across four hotels spanning Meta, Google and CRM.', stat: '4 hotels' },
-      { n: 3, title: 'Influence & Partnerships', desc: 'Coordinated 15+ influencer/UGC collaborations and negotiated co-marketing with Zomato, Sharaf DG, TravelPass and Travel Trends Magazine.', stat: '15+' },
-      { n: 4, title: '50+ a Year', desc: 'Executed 50+ digital campaigns annually across the hospitality brands.', stat: '50+/yr' },
+      { n: 1, title: 'The Ramadan Campaign', desc: 'Led the group’s Ramadan digital campaign — 2,200+ qualified enquiries across four properties.' },
+      { n: 2, title: 'Always-On, Four Hotels', desc: 'Managed always-on digital marketing across four hotels spanning Meta, Google and CRM.' },
+      { n: 3, title: 'Influence & Partnerships', desc: 'Coordinated 15+ influencer/UGC collaborations and negotiated co-marketing with Zomato, Sharaf DG, TravelPass and Travel Trends Magazine.' },
+      { n: 4, title: '50+ a Year', desc: 'Executed 50+ digital campaigns annually across the hospitality brands.' },
     ],
   },
   {
     season: 5,
-    theme: 'Commercial Growth & Systems',
     title: 'Commercial Marketing & OTA Manager',
     org: 'Durrani Group',
     place: 'Dubai, UAE',
@@ -552,23 +544,14 @@ export const seasons = [
     logline: 'Acting Marketing Manager — commercial growth across a four-company group.',
     art: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=80',
     episodes: [
-      { n: 1, title: 'Leading the Team', desc: 'Manage a nine-member marketing, OTA, reservations and content team across four business units.', stat: '9' },
-      { n: 2, title: 'The Revenue Transformation', desc: 'Grew direct booking revenue 4× (AED 40K → 160K/mo) and lifted direct contribution 5% → 16%.', stat: '4×', to: '/projects/direct-revenue-4x' },
-      { n: 3, title: 'The Occupancy Engine', desc: 'Raised average annual occupancy 50% → 79% across an 80+ unit portfolio via pricing, listings and channel expansion.', stat: '50→79%', to: '/projects/occupancy-engine' },
-      { n: 4, title: 'Acquisition Cost Halved', desc: 'Cut cost per qualified lead 60% while quadrupling qualified demand to 190/month.', stat: '−60%', to: '/projects/acquisition-efficiency' },
-      { n: 5, title: 'The Self-Writing Report', desc: 'Automated weekly reporting with n8n, Claude and Gemini — ~90% less effort.', stat: '~90%', to: '/projects/ai-reporting-automation' },
-      { n: 6, title: 'The Fortune 500 Door', desc: 'Opened corporate distribution via SilverDoor and AltoVita — access to Fortune 500 corporate-travel networks.', stat: 'F500', to: '/projects/corporate-distribution' },
+      { n: 1, title: 'Leading the Team', desc: 'Manage a nine-member marketing, OTA, reservations and content team across four business units.' },
+      { n: 2, title: 'The Revenue Transformation', desc: 'Grew direct booking revenue 4× (AED 40K → 160K/mo) and lifted direct contribution 5% → 16%.' },
+      { n: 3, title: 'The Occupancy Engine', desc: 'Raised average annual occupancy 50% → 79% across an 80+ unit portfolio via pricing, listings and channel expansion.' },
+      { n: 4, title: 'Acquisition, Halved', desc: 'Cut cost per qualified lead 60% while quadrupling qualified demand to 190/month.' },
+      { n: 5, title: 'The Self-Writing Report', desc: 'Automated weekly reporting with n8n, Claude and Gemini — ~90% less effort.' },
     ],
   },
 ]
-
-/* Series-level framing for the Career page. */
-export const seriesMeta = {
-  title: 'The Career',
-  tagline: 'From a marketing consultancy in India to commercial growth leadership in Dubai — six years, five chapters, one throughline: turning marketing into measurable revenue.',
-  seasonsLabel: '5 Chapters',
-  spanLabel: '2019 — Present',
-}
 
 /* -------- 8. CERTIFICATIONS -------- */
 export const certifications = [
