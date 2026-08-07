@@ -32,7 +32,7 @@ export const profile = {
   },
   role2: 'Marketing Manager — Growth & Commercial Strategy',
   valueProp:
-    'Marketing systems that connect acquisition, CRM, distribution and AI-enabled automation to measurable commercial outcomes — contributing to AED 1.67M monthly portfolio revenue and 89% occupancy across a 60-property portfolio.',
+    'I build integrated growth systems across performance marketing, revenue strategy, CRM, automation and analytics — connecting marketing activity to measurable commercial outcomes and scalable business growth.',
   headline:
     'Commercial growth marketer — acquisition, CRM, hospitality distribution and AI-enabled marketing automation, connected to business outcomes.',
   // Hero background priority: heroGif → heroVideo → heroImage (ken-burns).

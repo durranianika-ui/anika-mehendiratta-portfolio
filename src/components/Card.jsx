@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import SmartImage from './SmartImage.jsx'
 import { useSound } from '../context/SoundContext.jsx'
+import { useMotionPreviewAllowed, useInViewPlayback } from '../lib/videoPreview.js'
 import './Card.css'
 
 // Standard 16:9 collection card (and the slightly larger "continue" variant).
@@ -12,12 +13,16 @@ export default function Card({ project, kind = 'poster', index = 0 }) {
   const sound = useSound()
   const videoRef = useRef(null)
 
+  // Previews play while the card is on screen (desktop only), pause off-screen.
+  const previewAllowed = useMotionPreviewAllowed() && Boolean(project.video)
+  useInViewPlayback(videoRef, previewAllowed)
+
   const enter = () => {
     sound.play('hover')
     const v = videoRef.current
     if (v) { v.currentTime = 0; v.play?.().catch(() => {}) }
   }
-  const leave = () => { const v = videoRef.current; if (v) v.pause?.() }
+  const leave = () => { /* playback stays governed by the IntersectionObserver */ }
 
   return (
     <motion.article
@@ -35,8 +40,8 @@ export default function Card({ project, kind = 'poster', index = 0 }) {
         onClick={() => { sound.play('play'); navigate(`/projects/${project.id}`) }}
       >
         <div className="card__media">
-          {/* muted hover-preview video where available, else cinematic still */}
-          {project.video ? (
+          {/* muted autoplay preview where allowed (desktop, motion OK), else cinematic still */}
+          {previewAllowed ? (
             <video ref={videoRef} className="card__video" src={project.video} muted loop playsInline preload="metadata" poster={project.banner} />
           ) : null}
           <SmartImage src={project.banner} alt={project.title} className="card__art" />

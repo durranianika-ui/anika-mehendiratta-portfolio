@@ -1,7 +1,8 @@
 import { useParams, Link, Navigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { projects } from '../data/content.js'
+import { useMotionPreviewAllowed, useInViewPlayback } from '../lib/videoPreview.js'
 import { pageTransition, fadeUp, stagger } from '../lib/motion.js'
 import SectionReveal from '../components/SectionReveal.jsx'
 import Row from '../components/Row.jsx'
@@ -13,6 +14,11 @@ export default function TitleDetail() {
   const { id } = useParams()
   const project = projects.find((p) => p.id === id)
   const [lightbox, setLightbox] = useState(null)
+  const heroVideoRef = useRef(null)
+
+  // Banner video plays while the hero is on screen (desktop only), pauses off-screen.
+  const previewAllowed = useMotionPreviewAllowed() && Boolean(project?.video)
+  useInViewPlayback(heroVideoRef, previewAllowed, 0.15)
 
   if (!project) return <Navigate to="/" replace />
 
@@ -23,8 +29,8 @@ export default function TitleDetail() {
       {/* --- HERO BANNER --- */}
       <header className="title__hero">
         <div className="title__hero-media">
-          {project.video ? (
-            <video src={project.video} autoPlay muted loop playsInline poster={project.banner} />
+          {previewAllowed ? (
+            <video ref={heroVideoRef} src={project.video} autoPlay muted loop playsInline poster={project.banner} />
           ) : (
             <SmartImage src={project.banner} alt="" eager />
           )}

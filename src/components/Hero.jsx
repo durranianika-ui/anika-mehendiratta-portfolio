@@ -1,7 +1,7 @@
-import { useRef, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useRef, useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { profile, heroStats } from '../data/content.js'
+import { profile } from '../data/content.js'
 import Particles from './Particles.jsx'
 import SmartImage from './SmartImage.jsx'
 import { useSound } from '../context/SoundContext.jsx'
@@ -18,8 +18,15 @@ export default function Hero() {
   const base = 0.15
   const videoRef = useRef(null)
 
+  // Reduced motion → static cinematic still instead of the moving background.
+  const reducedMotion = useMemo(
+    () => typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches,
+    [],
+  )
+
   // Ensure the muted background loop actually plays (some engines ignore autoPlay).
   useEffect(() => {
+    if (reducedMotion) return
     const v = videoRef.current
     if (!v) return
     v.muted = true
@@ -27,13 +34,15 @@ export default function Hero() {
     tryPlay()
     v.addEventListener('canplay', tryPlay, { once: true })
     return () => v.removeEventListener('canplay', tryPlay)
-  }, [])
+  }, [reducedMotion])
 
   return (
     <section className="hero" ref={ref} aria-label="Introduction">
-      {/* Full-bleed background — GIF → video → ken-burns image */}
+      {/* Full-bleed background — GIF → video → ken-burns image (static when reduced motion) */}
       <motion.div className="hero__bg" style={{ y, scale }}>
-        {profile.heroGif ? (
+        {reducedMotion ? (
+          <SmartImage className="hero__still" src={profile.heroImage} alt="" eager />
+        ) : profile.heroGif ? (
           <img className="hero__gif" src={profile.heroGif} alt="" />
         ) : profile.heroVideo ? (
           <video ref={videoRef} src={profile.heroVideo} poster={profile.heroImage} autoPlay muted loop playsInline preload="auto" />
@@ -43,6 +52,7 @@ export default function Hero() {
       </motion.div>
       <div className="hero__scrim" />
       <div className="hero__scrim hero__scrim--bottom" />
+      <div className="hero__vignette" aria-hidden="true" />
       <div className="hero__bloom" aria-hidden="true" />
       <Particles className="hero__particles" />
 
@@ -58,7 +68,7 @@ export default function Hero() {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </motion.button>
 
-      {/* Content panel (reference layout) */}
+      {/* Content panel (reference layout: 4-line headline, paragraph, two buttons) */}
       <div className="hero__wrap container">
         <motion.div
           className="hero__panel"
@@ -66,29 +76,25 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: base + 0.15 }}
         >
-          <p className="hero__kicker">Marketing Manager · Growth, Commercial Strategy &amp; Business Development</p>
           <h1 className="hero__title">
-            <span>Anika</span>
-            <span>Mehendiratta</span>
+            <span>Growth &amp;</span>
+            <span>Commercial</span>
+            <span className="hero__title-dim">Marketing</span>
+            <span className="hero__title-dim">Leader</span>
           </h1>
-          <p className="hero__desc">{profile.tagline}</p>
-
-          <ul className="hero__stats" aria-label="Key career metrics">
-            {heroStats.map((s) => (
-              <li key={s.label}>
-                <span className="hero__stat-v">{s.value}</span>
-                <span className="hero__stat-l">{s.label}</span>
-              </li>
-            ))}
-          </ul>
+          <p className="hero__desc">{profile.valueProp}</p>
 
           <div className="hero__actions">
-            <Link to="/achievements" className="btn btn--primary" onClick={() => sound.play('play')} onMouseEnter={() => sound.play('hover')}>
+            <a
+              href={profile.resumeFile}
+              target="_blank"
+              rel="noreferrer noopener"
+              className="btn btn--primary"
+              onClick={() => sound.play('play')}
+              onMouseEnter={() => sound.play('hover')}
+            >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-              View My Impact
-            </Link>
-            <a href={profile.resumeFile} download="Anika-Mehendiratta-CV.pdf" className="btn btn--ghost" onClick={() => sound.play('click')} onMouseEnter={() => sound.play('hover')}>
-              Download CV
+              Resume
             </a>
             <a href={profile.socials.LinkedIn} target="_blank" rel="noreferrer noopener" className="btn btn--ghost" onMouseEnter={() => sound.play('hover')}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" strokeLinecap="round" /></svg>
