@@ -1,0 +1,70 @@
+.csys { margin-block: clamp(3rem, 8vw, 6rem); }
+.csys__lead { color: var(--text-lo); margin-top: 0.6rem; max-width: 62ch; line-height: 1.55; }
+
+.csys__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: start;
+}
+
+/* --- the chain --- */
+.csys__chain { list-style: none; display: flex; flex-direction: column; }
+.csys__node {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem 1.2rem 1.5rem;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(160deg, var(--bg-2), var(--bg-1));
+  border: 1px solid var(--line);
+  transition: border-color var(--dur-fast), transform var(--dur-fast) var(--ease-cinema);
+}
+.csys__node:hover { border-color: var(--line-strong); transform: translateX(4px); }
+.csys__node + .csys__node { margin-top: 1.4rem; }
+.csys__no {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  color: var(--accent-soft);
+  line-height: 1.6;
+  flex: 0 0 auto;
+}
+.csys__node h3 { font-size: var(--step-0); color: var(--text-hi); }
+.csys__node p { font-size: var(--step--1); color: var(--text-lo); margin-top: 0.25rem; line-height: 1.45; }
+.csys__arrow {
+  position: absolute;
+  left: 1.35rem;
+  bottom: -1.25rem;
+  color: var(--accent-soft);
+  font-size: 0.95rem;
+  line-height: 1;
+  z-index: 1;
+}
+
+/* --- the lanes --- */
+.csys__lanes { display: flex; flex-direction: column; gap: 1.2rem; position: sticky; top: 90px; }
+.csys__lane {
+  padding: 1.5rem 1.5rem 1.7rem;
+  border-radius: var(--radius-lg);
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+}
+.csys__lane-label {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.5rem;
+}
+.csys__lane h3 { font-size: var(--step-1); color: var(--text-hi); }
+.csys__lane p { font-size: var(--step--1); color: var(--text-lo); margin-top: 0.5rem; line-height: 1.5; }
+
+@media (max-width: 860px) {
+  .csys__grid { grid-template-columns: 1fr; }
+  .csys__lanes { position: static; }
+}

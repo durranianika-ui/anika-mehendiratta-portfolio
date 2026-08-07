@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { projects, rows, certifications, topTen, trustedWith, capabilityRows } from '../data/content.js'
+import { projects, rows, certifications, topTen, trustedWith, trustedWithNote, capabilityRows } from '../data/content.js'
 import { pageTransition, stagger, fadeUp } from '../lib/motion.js'
 import { useProfile } from '../context/ProfileContext.jsx'
 import Hero from '../components/Hero.jsx'
@@ -9,6 +9,7 @@ import Row from '../components/Row.jsx'
 import TopTen from '../components/TopTen.jsx'
 import SeasonsRow from '../components/SeasonsRow.jsx'
 import CapabilityRow from '../components/CapabilityRow.jsx'
+import CommercialSystem from '../components/CommercialSystem.jsx'
 import Footer from '../components/Footer.jsx'
 import './Home.css'
 
@@ -22,6 +23,8 @@ function Counter({ value, prefix = '', suffix = '', decimals = 0 }) {
   const [n, setN] = useState(0)
   useEffect(() => {
     if (!inView) return
+    // Respect reduced-motion: show the final value without the count-up.
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) { setN(value); return }
     const c = animate(0, value, { duration: 1.7, ease: [0.22, 1, 0.36, 1], onUpdate: (v) => setN(v) })
     return () => c.stop()
   }, [inView, value])
@@ -67,10 +70,13 @@ export default function Home() {
         )}
       </div>
 
+      {/* How the five pillars connect — one commercial system */}
+      <CommercialSystem />
+
       {/* Trusted With — animated executive counters */}
       <section className="trusted container" aria-label="Trusted with">
         <motion.div className="genres__head" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.6 }}>
-          <p className="eyebrow">The numbers I’ve owned</p>
+          <p className="eyebrow">The numbers behind the story</p>
           <h2>Trusted with</h2>
         </motion.div>
         <motion.div className="trusted__grid" variants={stagger(0.06)} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
@@ -81,6 +87,7 @@ export default function Home() {
             </motion.div>
           ))}
         </motion.div>
+        <p className="trusted__note">{trustedWithNote}</p>
       </section>
 
       {/* Certifications */}

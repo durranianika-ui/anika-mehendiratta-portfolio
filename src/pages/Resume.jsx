@@ -78,6 +78,7 @@ export default function Resume() {
         <div className="rsec-row">
           <section className="rsec">
             <h2>Education</h2>
+            <p><strong>{education.diploma.degree}</strong><br />{education.diploma.school}<br />{education.diploma.period}</p>
             <p><strong>{education.degree}</strong><br />{education.school}<br />{education.period}</p>
             <p className="rlang">{education.languages.map((l) => `${l.name} (${l.level})`).join(' · ')}<br />{education.extra}</p>
           </section>

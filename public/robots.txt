@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://durranianika-ui.github.io/anika-mehendiratta-portfolio/sitemap.xml

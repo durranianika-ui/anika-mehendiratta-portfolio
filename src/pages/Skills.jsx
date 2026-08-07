@@ -7,12 +7,11 @@ import './Skills.css'
 
 // map each capability to a proof project (evidence, not fake bars)
 const proofFor = {
-  'Commercial & Revenue': 'direct-revenue-4x',
-  'Marketing & Growth': 'acquisition-efficiency',
-  'CRM & Lifecycle': 'acquisition-efficiency',
-  'Analytics & Reporting': 'ai-reporting-automation',
-  'AI & Automation': 'ai-reporting-automation',
-  'Leadership & Operations': 'occupancy-engine',
+  'Commercial Growth': 'commercial-growth-engine',
+  'Performance & Acquisition': 'acquisition-efficiency',
+  'CRM & Lifecycle': 'direct-booking-growth',
+  'Hospitality & Distribution': 'distribution-expansion',
+  'AI & Marketing Automation': 'marketing-automation',
 }
 const proj = (id) => projects.find((p) => p.id === id)
 

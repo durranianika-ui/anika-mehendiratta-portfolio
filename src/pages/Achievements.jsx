@@ -8,12 +8,12 @@ import { useSound } from '../context/SoundContext.jsx'
 import './Achievements.css'
 
 const linkFor = {
-  1: '/projects/direct-revenue-4x',
-  2: '/projects/occupancy-engine',
-  3: '/projects/acquisition-efficiency',
-  4: '/projects/direct-revenue-4x',
-  5: '/projects/ai-reporting-automation',
-  6: '/professional',
+  1: '/projects/commercial-growth-engine',
+  2: '/projects/commercial-growth-engine',
+  3: '/projects/direct-booking-growth',
+  4: '/projects/acquisition-efficiency',
+  5: '/projects/distribution-expansion',
+  6: '/projects/hotel-demand-generation',
 }
 
 export default function Achievements() {

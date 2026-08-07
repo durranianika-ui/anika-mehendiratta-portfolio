@@ -105,6 +105,7 @@
 .trusted__v { display: block; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.8rem, 1.2rem + 2vw, 2.8rem); color: var(--text-hi); line-height: 1; }
 .trusted__item:nth-child(odd) .trusted__v { color: var(--accent-soft); }
 .trusted__l { color: var(--text-lo); font-size: var(--step--1); }
+.trusted__note { color: var(--text-faint); font-size: 0.74rem; line-height: 1.5; margin-top: 0.9rem; max-width: 78ch; }
 
 /* --- What I bring (outcome cards) --- */
 .brings { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.1rem; }

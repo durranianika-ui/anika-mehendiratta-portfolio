@@ -1,7 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, useScroll, useTransform } from 'framer-motion'
-import { profile } from '../data/content.js'
+import { profile, heroStats } from '../data/content.js'
 import Particles from './Particles.jsx'
 import SmartImage from './SmartImage.jsx'
 import { useSound } from '../context/SoundContext.jsx'
@@ -66,17 +66,30 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: base + 0.15 }}
         >
+          <p className="hero__kicker">Marketing Manager · Growth, Commercial Strategy &amp; Business Development</p>
           <h1 className="hero__title">
-            <span>Growth &amp; Commercial</span>
-            <span>Marketing Leader</span>
+            <span>Anika</span>
+            <span>Mehendiratta</span>
           </h1>
-          <p className="hero__desc">{profile.valueProp}</p>
+          <p className="hero__desc">{profile.tagline}</p>
+
+          <ul className="hero__stats" aria-label="Key career metrics">
+            {heroStats.map((s) => (
+              <li key={s.label}>
+                <span className="hero__stat-v">{s.value}</span>
+                <span className="hero__stat-l">{s.label}</span>
+              </li>
+            ))}
+          </ul>
 
           <div className="hero__actions">
-            <Link to="/resume" className="btn btn--primary" onClick={() => sound.play('play')} onMouseEnter={() => sound.play('hover')}>
+            <Link to="/achievements" className="btn btn--primary" onClick={() => sound.play('play')} onMouseEnter={() => sound.play('hover')}>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-              Resume
+              View My Impact
             </Link>
+            <a href={profile.resumeFile} download="Anika-Mehendiratta-CV.pdf" className="btn btn--ghost" onClick={() => sound.play('click')} onMouseEnter={() => sound.play('hover')}>
+              Download CV
+            </a>
             <a href={profile.socials.LinkedIn} target="_blank" rel="noreferrer noopener" className="btn btn--ghost" onMouseEnter={() => sound.play('hover')}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" strokeLinecap="round" /></svg>
               LinkedIn
